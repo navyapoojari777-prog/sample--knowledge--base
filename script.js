@@ -422,8 +422,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!container) return;
 
         // Current count is 1 (Stats card only)
-        // We want 892 total data cards. 
-        const totalTarget = 892;
+        // We want 1243 total data cards. 
+        const totalTarget = 1243;
         const currentCards = container.querySelectorAll('.error-card').length - 1; // Subtract stats card
         const needed = totalTarget - currentCards;
 
@@ -1493,4 +1493,3 @@ SELECT now();
         });
     }
 });
-
