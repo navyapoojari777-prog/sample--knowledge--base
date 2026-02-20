@@ -1,0 +1,1496 @@
+// Search functionality
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize: Show home section by default (top nav)
+    const homeSection = document.getElementById('home-section');
+    const productsSection = document.getElementById('products-section');
+    const servicesSection = document.getElementById('services-section');
+    const resourcesSection = document.getElementById('resources-section');
+    const careersSection = document.getElementById('careers-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const introductionSection = document.getElementById('introduction-section');
+    const acidSection = document.getElementById('acid-properties-section');
+    const dataIntegritySection = document.getElementById('data-integrity-section');
+    const joinErrorsSection = document.getElementById('join-errors-section');
+    const postgresArchSection = document.getElementById('postgres-architecture-section');
+
+    // Show home section (top nav active)
+    if (homeSection) homeSection.style.display = 'block';
+
+    // Hide all other sections
+    if (productsSection) productsSection.style.display = 'none';
+    if (servicesSection) servicesSection.style.display = 'none';
+    if (resourcesSection) resourcesSection.style.display = 'none';
+    if (careersSection) careersSection.style.display = 'none';
+    if (dashboardSection) dashboardSection.style.display = 'none';
+    if (introductionSection) introductionSection.style.display = 'none';
+    if (acidSection) acidSection.style.display = 'none';
+    if (dataIntegritySection) dataIntegritySection.style.display = 'none';
+    if (joinErrorsSection) joinErrorsSection.style.display = 'none';
+    if (postgresArchSection) postgresArchSection.style.display = 'none';
+
+    const searchInput = document.querySelector('.search-input');
+    const errorCards = document.querySelectorAll('.error-card');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const sections = document.querySelectorAll('.content-section');
+
+            // If search is cleared, reset view to active section
+            if (searchTerm === '') {
+                // Show all cards again
+                errorCards.forEach(card => card.style.display = '');
+
+                // Trigger click on active nav item to restore section visibility
+                const activeNav = document.querySelector('.nav-item.active') || document.querySelector('.nav-link.active');
+                if (activeNav) {
+                    // We can't easily trigger the exact event handler logic without clicking, 
+                    // but we can manually reset sections based on active nav.
+                    // Simpler: just click it.
+                    activeNav.click();
+                } else {
+                    // Fallback: show home, hide others
+                    sections.forEach(s => s.style.display = 'none');
+                    const home = document.getElementById('home-section');
+                    if (home) home.style.display = 'block';
+                }
+                return;
+            }
+
+            // Search Logic
+            sections.forEach(section => {
+                const header = section.querySelector('.content-header h1');
+                const subtitle = section.querySelector('.content-header .subtitle');
+                const sectionName = (header ? header.textContent : '').toLowerCase();
+                const sectionSub = (subtitle ? subtitle.textContent : '').toLowerCase();
+
+                // specific check for section match
+                const isSectionMatch = sectionName.includes(searchTerm) || sectionSub.includes(searchTerm);
+
+                const cards = section.querySelectorAll('.error-card');
+                let hasVisibleCard = false;
+
+                cards.forEach(card => {
+                    const cardText = card.textContent.toLowerCase();
+                    const isCardMatch = cardText.includes(searchTerm);
+
+                    // Show card if:
+                    // 1. The Section Title matches (show matches AND non-matches in this section -> show ALL)
+                    // 2. The Card itself matches
+                    if (isSectionMatch || isCardMatch) {
+                        card.style.display = '';
+                        hasVisibleCard = true;
+
+                        // Ensure details are expanded/visible
+                        const details = card.querySelector('.error-details');
+                        if (details) {
+                            details.style.display = 'block';
+                        }
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show Section if it matches OR contains matching cards
+                if (isSectionMatch || hasVisibleCard) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Section switching functionality
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Remove active class from all nav items
+            navItems.forEach(nav => nav.classList.remove('active'));
+            // Add active class to clicked item
+            this.classList.add('active');
+
+            // Hide all sections
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Hide top nav sections when sidebar nav is clicked
+            const homeSection = document.getElementById('home-section');
+            const productsSection = document.getElementById('products-section');
+            const servicesSection = document.getElementById('services-section');
+            const resourcesSection = document.getElementById('resources-section');
+            const careersSection = document.getElementById('careers-section');
+
+            if (homeSection) homeSection.style.display = 'none';
+            if (productsSection) productsSection.style.display = 'none';
+            if (servicesSection) servicesSection.style.display = 'none';
+            if (resourcesSection) resourcesSection.style.display = 'none';
+            if (careersSection) careersSection.style.display = 'none';
+
+            // Show corresponding section based on data-target
+            const targetId = this.getAttribute('data-target');
+            if (targetId) {
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    if (targetId === 'acid-properties-section' && typeof generateAcidIssues === 'function') {
+                        setTimeout(generateAcidIssues, 50);
+                    }
+                    if (targetId === 'data-integrity-section' && typeof generateDataIntegrityIssues === 'function') {
+                        setTimeout(generateDataIntegrityIssues, 50);
+                    }
+                    if (targetId === 'postgres-architecture-section' && typeof generateArchitectureIssues === 'function') {
+                        setTimeout(generateArchitectureIssues, 50);
+                    }
+                    if (targetId === 'backup-recovery-section' && typeof generateBackupRecoveryIssues === 'function') {
+                        setTimeout(generateBackupRecoveryIssues, 50);
+                    }
+                    if (targetId === 'connection-auth-section' && typeof generateConnectionAuthIssues === 'function') {
+                        setTimeout(generateConnectionAuthIssues, 50);
+                    }
+                    if (targetId === 'performance-optimization-section' && typeof generatePerformanceIssues === 'function') {
+                        setTimeout(generatePerformanceIssues, 50);
+                    }
+                    if (targetId === 'replication-ha-section' && typeof generateReplicationIssues === 'function') {
+                        setTimeout(generateReplicationIssues, 50);
+                    }
+                    if (targetId === 'security-postgres-section' && typeof generateSecurityPostgresIssues === 'function') {
+                        setTimeout(generateSecurityPostgresIssues, 50);
+                    }
+                    if (targetId === 'extensions-section' && typeof generateExtensionsIssues === 'function') {
+                        setTimeout(generateExtensionsIssues, 50);
+                    }
+                    if (targetId === 'fts-section' && typeof generateFtsIssues === 'function') {
+                        setTimeout(generateFtsIssues, 50);
+                    }
+                    if (targetId === 'glossary-section' && typeof generateGlossaryIssues === 'function') {
+                        setTimeout(generateGlossaryIssues, 50);
+                    }
+                    if (targetId === 'locking-concurrency-section' && typeof generateLockingConcurrencyIssues === 'function') {
+                        setTimeout(generateLockingConcurrencyIssues, 50);
+                    }
+                    if (targetId === 'mvcc-section' && typeof generateMvccIssues === 'function') {
+                        setTimeout(generateMvccIssues, 50);
+                    }
+                    if (targetId === 'postgres-17-section' && typeof generatePostgres17Issues === 'function') {
+                        setTimeout(generatePostgres17Issues, 50);
+                    }
+                    if (targetId === 'postgres-business-section' && typeof generatePostgresBusinessIssues === 'function') {
+                        setTimeout(generatePostgresBusinessIssues, 50);
+                    }
+                    if (targetId === 'query-indexing-section' && typeof generateQueryIndexingIssues === 'function') {
+                        setTimeout(generateQueryIndexingIssues, 50);
+                    }
+                    if (targetId === 'sql-indexes-section' && typeof generateSqlIndexesIssues === 'function') {
+                        setTimeout(generateSqlIndexesIssues, 50);
+                    }
+                    if (targetId === 'sql-joins-section' && typeof generateSqlJoinsIssues === 'function') {
+                        setTimeout(generateSqlJoinsIssues, 50);
+                    }
+                    if (targetId === 'system-catalogs-section' && typeof generateSystemCatalogIssues === 'function') {
+                        setTimeout(generateSystemCatalogIssues, 50);
+                    }
+                    if (targetId === 'troubleshooting-debugging-section' && typeof generateTroubleshootingIssues === 'function') {
+                        setTimeout(generateTroubleshootingIssues, 50);
+                    }
+                    if (targetId === 'upgrade-migration-section' && typeof generateUpgradeMigrationIssues === 'function') {
+                        setTimeout(generateUpgradeMigrationIssues, 50);
+                    }
+                    if (targetId === 'version-features-section' && typeof generateVersionFeaturesIssues === 'function') {
+                        setTimeout(generateVersionFeaturesIssues, 50);
+                    }
+                }
+            }
+        });
+    });
+
+    // Top navigation handling
+    const topNavLinks = document.querySelectorAll('.main-nav .nav-link');
+    topNavLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Remove active class from all top nav links
+            topNavLinks.forEach(nav => nav.classList.remove('active'));
+            // Add active class to clicked link
+            this.classList.add('active');
+
+            // Hide all content sections
+            const allSections = document.querySelectorAll('.content-section');
+            allSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Hide sidebar sections (knowledge base)
+            const sidebarSections = document.querySelectorAll('.content-section[id$="-section"]');
+            sidebarSections.forEach(section => {
+                if (!section.id.includes('home') &&
+                    !section.id.includes('products') &&
+                    !section.id.includes('services') &&
+                    !section.id.includes('resources') &&
+                    !section.id.includes('careers')) {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Show corresponding section based on nav text
+            const navText = this.textContent.trim();
+            const homeSection = document.getElementById('home-section');
+            const productsSection = document.getElementById('products-section');
+            const servicesSection = document.getElementById('services-section');
+            const resourcesSection = document.getElementById('resources-section');
+            const careersSection = document.getElementById('careers-section');
+
+            if (navText.includes('Home')) {
+                if (homeSection) homeSection.style.display = 'block';
+            } else if (navText.includes('Products')) {
+                if (productsSection) productsSection.style.display = 'block';
+            } else if (navText.includes('Services')) {
+                if (servicesSection) servicesSection.style.display = 'block';
+            } else if (navText.includes('Resources')) {
+                if (resourcesSection) resourcesSection.style.display = 'block';
+            } else if (navText.includes('Careers')) {
+                if (careersSection) careersSection.style.display = 'block';
+            } else {
+                // Default: show home section
+                if (homeSection) homeSection.style.display = 'block';
+            }
+        });
+    });
+
+    // Expand/collapse error details (optional enhancement)
+    const errorTitles = document.querySelectorAll('.error-title');
+    errorTitles.forEach(title => {
+        title.style.cursor = 'pointer';
+        title.addEventListener('click', function () {
+            const details = this.closest('.error-card').querySelector('.error-details');
+            if (details) {
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+
+    // Filter by severity
+    const severityBadges = document.querySelectorAll('.severity-badge');
+    severityBadges.forEach(badge => {
+        badge.style.cursor = 'pointer';
+        badge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const severity = this.classList.contains('high') ? 'high' : 'medium';
+
+            errorCards.forEach(card => {
+                const cardSeverity = card.getAttribute('data-severity');
+                if (severity === 'all' || cardSeverity === severity) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Add animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    errorCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(card);
+    });
+
+    // Modal functionality
+    const contactBtn = document.querySelector('.header-actions .btn-secondary:first-of-type');
+    const loginBtn = document.querySelector('.header-actions .btn-secondary:last-of-type');
+    const contactModal = document.getElementById('contact-modal');
+    const loginModal = document.getElementById('login-modal');
+    const closeModalBtns = document.querySelectorAll('.close-modal, .close-modal-btn');
+
+    // Open Contact Us modal
+    if (contactBtn && contactModal) {
+        contactBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            contactModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    // Open Login modal
+    if (loginBtn && loginModal) {
+        loginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            loginModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    // Close modals
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (contactModal) contactModal.style.display = 'none';
+            if (loginModal) loginModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function (event) {
+        if (event.target === contactModal) {
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        if (event.target === loginModal) {
+            loginModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Handle form submissions
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            contactForm.reset();
+        });
+    }
+
+    const loginForm = document.querySelector('.login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Login functionality would be implemented here. This is a demo.');
+            // In a real application, this would send credentials to a server
+        });
+    }
+
+    // Handle social login buttons
+    const socialBtns = document.querySelectorAll('.btn-social');
+    socialBtns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const provider = this.textContent.trim();
+            alert(`${provider} login would be implemented here. This is a demo.`);
+        });
+    });
+
+    // Handle forgot password link
+    const forgotPasswordLink = document.querySelector('.forgot-password');
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert('Password reset functionality would be implemented here. This is a demo.');
+        });
+    }
+
+    // Handle signup link
+    const signupLink = document.querySelector('.signup-link');
+    if (signupLink) {
+        signupLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (loginModal) loginModal.style.display = 'none';
+            alert('Sign up functionality would be implemented here. This is a demo.');
+        });
+    }
+
+
+    // Dynamic ACID Issue Generation
+    function generateAcidIssues() {
+        const acidSection = document.getElementById('acid-properties-section');
+        if (!acidSection) return;
+
+        const container = acidSection.querySelector('.errors-container');
+        if (!container) return;
+
+        // Current count is 1 (Stats card only)
+        // We want 892 total data cards. 
+        const totalTarget = 892;
+        const currentCards = container.querySelectorAll('.error-card').length - 1; // Subtract stats card
+        const needed = totalTarget - currentCards;
+
+        if (needed <= 0) return;
+
+        // We need 12 criticals total
+        let criticalsNeeded = 12;
+
+        const topics = [
+            { title: "Atomicity Violation", icon: "⚛️", sev: "critical", code: "Atomicity" },
+            { title: "Dirty Read Detected", icon: "👀", sev: "medium", code: "Isolation" },
+            { title: "Non-Repeatable Read", icon: "🔄", sev: "medium", code: "Isolation" },
+            { title: "Phantom Read Error", icon: "👻", sev: "medium", code: "Isolation" },
+            { title: "Serialization Failure", icon: "🔒", sev: "high", code: "Concurrency" },
+            { title: "Constraint Violation", icon: "🚫", sev: "medium", code: "Integrity" },
+            { title: "Foreign Key Error", icon: "🔗", sev: "medium", code: "Integrity" },
+            { title: "WAL Write Failure", icon: "💾", sev: "critical", code: "Durability" },
+            { title: "Checkpoint Latency", icon: "⏱️", sev: "medium", code: "Performance" },
+            { title: "Deadlock Detected", icon: "💀", sev: "high", code: "Concurrency" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+
+            // Force critical based on our counter, otherwise use topic default
+            let isCritical = criticalsNeeded > 0;
+            if (isCritical) criticalsNeeded--;
+
+            // If we forced critical, use critical styling. If not, use topic styling (unless topic is critical)
+            const severity = isCritical ? 'critical' : topic.sev;
+            const icon = isCritical ? '🔥' : topic.icon; // Use fire for forced criticals, or topic icon
+            const currentCode = isCritical ? 'CRIT' : topic.code;
+            const codeSuffix = String(i + 1).padStart(3, '0');
+
+            // Slightly vary the title for realism
+            const finalTitle = isCritical ? `CRITICAL: ${topic.title}` : `${topic.title} (Simulated #${i + 1})`;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', severity);
+
+            card.innerHTML = `
+                <div class="error-icon ${severity}">${icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${finalTitle}</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${severity}">${severity.charAt(0).toUpperCase() + severity.slice(1)}</span>
+                        <span class="error-code">${currentCode}-${codeSuffix}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This is a simulated ${topic.title.toLowerCase()} entry to demonstrate transaction integrity handling and ACID properties.</p>
+                        <h3>Recommendation</h3>
+                        <pre><code>-- Standard mitigation
+ROLLBACK;
+BEGIN;
+-- Retail transaction logic
+COMMIT;</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Run generation
+    setTimeout(generateAcidIssues, 100);
+
+    // Dynamic Data Integrity Issue Generation
+    function generateDataIntegrityIssues() {
+        const dataIntegritySection = document.getElementById('data-integrity-section');
+        if (!dataIntegritySection) return;
+
+        const container = dataIntegritySection.querySelector('.errors-container');
+        if (!container) return;
+
+        // Keep exactly 1243 issue cards (excluding auto overview card)
+        const totalTarget = 1243;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Unique Constraint Violation", icon: "⚠️", sev: "medium", code: "23505" },
+            { title: "NOT NULL Constraint Violation", icon: "⛔", sev: "medium", code: "23502" },
+            { title: "Foreign Key Constraint Violation", icon: "🔗", sev: "high", code: "23503" },
+            { title: "Check Constraint Violation", icon: "✅", sev: "medium", code: "23514" },
+            { title: "Invalid Input Syntax", icon: "🧾", sev: "medium", code: "22P02" },
+            { title: "Domain Constraint Violation", icon: "🧩", sev: "medium", code: "23514" },
+            { title: "Data Type Mismatch", icon: "🔀", sev: "high", code: "42804" },
+            { title: "Serialization Anomaly", icon: "🔒", sev: "high", code: "40001" },
+            { title: "Deferred Constraint Failure", icon: "⏱️", sev: "medium", code: "23P01" },
+            { title: "Exclusion Constraint Violation", icon: "🚫", sev: "high", code: "23P01" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">Code: ${topic.code}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Explanation</h3>
+                        <p>This is a simulated data integrity issue to complete the 1243 issue catalog for this category.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Validate and fix data before commit
+BEGIN;
+-- correction logic
+COMMIT;</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Ensure Data Integrity section also reaches 1243 issues
+    setTimeout(generateDataIntegrityIssues, 120);
+
+    // Dynamic PostgreSQL Architecture Issue Generation
+    function generateArchitectureIssues() {
+        const architectureSection = document.getElementById('postgres-architecture-section');
+        if (!architectureSection) return;
+
+        const container = architectureSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 432;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Backend Process Saturation", icon: "🧠", sev: "high", code: "ARCH-PROC" },
+            { title: "Shared Buffer Pressure", icon: "💾", sev: "medium", code: "ARCH-MEM" },
+            { title: "Checkpoint I/O Spike", icon: "⏱️", sev: "medium", code: "ARCH-CKPT" },
+            { title: "WAL Flush Bottleneck", icon: "🧾", sev: "high", code: "ARCH-WAL" },
+            { title: "Autovacuum Worker Contention", icon: "🧹", sev: "medium", code: "ARCH-AV" },
+            { title: "Lock Manager Queue Build-up", icon: "🔒", sev: "high", code: "ARCH-LOCK" },
+            { title: "Stats Collector Delay", icon: "📊", sev: "medium", code: "ARCH-STAT" },
+            { title: "Catalog Cache Miss Burst", icon: "🗂️", sev: "medium", code: "ARCH-CAT" },
+            { title: "Replication Sender Backlog", icon: "🔄", sev: "high", code: "ARCH-REPL" },
+            { title: "Executor Plan Drift", icon: "🧭", sev: "medium", code: "ARCH-PLAN" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(3, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Explanation</h3>
+                        <p>This simulated architecture issue expands the section catalog to 432 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Review architecture signals
+SELECT now();
+-- Apply tuning safely in staging first</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Backup & Recovery Issue Generation
+    function generateBackupRecoveryIssues() {
+        const backupSection = document.getElementById('backup-recovery-section');
+        if (!backupSection) return;
+
+        const container = backupSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 321;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Base Backup Stream Interrupted", icon: "💾", sev: "high", code: "BKP-BASE" },
+            { title: "Archive Command Timeout", icon: "🕒", sev: "high", code: "BKP-ARCH" },
+            { title: "WAL Segment Missing", icon: "🧱", sev: "critical", code: "BKP-WAL" },
+            { title: "Restore Point Not Found", icon: "📍", sev: "medium", code: "BKP-RP" },
+            { title: "Recovery Target Conflict", icon: "🎯", sev: "medium", code: "BKP-TGT" },
+            { title: "Replica Rewind Required", icon: "⏪", sev: "high", code: "BKP-RWD" },
+            { title: "Backup Verification Failed", icon: "✅", sev: "medium", code: "BKP-VER" },
+            { title: "Retention Window Breach", icon: "📦", sev: "medium", code: "BKP-RET" },
+            { title: "Incremental Chain Broken", icon: "🔗", sev: "high", code: "BKP-INC" },
+            { title: "PITR Replay Lag", icon: "⏳", sev: "medium", code: "BKP-PITR" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(3, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Explanation</h3>
+                        <p>This simulated backup/recovery issue expands the section catalog to 321 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Validate backup chain
+SELECT now();
+-- Re-run verification and recovery drills</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Ensure these sections also reach their dashboard totals
+    setTimeout(generateArchitectureIssues, 130);
+    setTimeout(generateBackupRecoveryIssues, 140);
+
+    // Dynamic Connection & Authentication Issue Generation
+    function generateConnectionAuthIssues() {
+        const connectionSection = document.getElementById('connection-auth-section');
+        if (!connectionSection) return;
+
+        const container = connectionSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 284;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Password Authentication Failed", icon: "🔐", sev: "high", code: "28P01" },
+            { title: "No pg_hba.conf Entry", icon: "🚫", sev: "high", code: "28000" },
+            { title: "Connection Slots Exhausted", icon: "📶", sev: "medium", code: "53300" },
+            { title: "Connection Refused", icon: "🔌", sev: "critical", code: "08001" },
+            { title: "SSL Required by Policy", icon: "🛡️", sev: "medium", code: "08006" },
+            { title: "SCRAM Handshake Mismatch", icon: "🔑", sev: "high", code: "08P01" },
+            { title: "Client Certificate Validation Failed", icon: "📜", sev: "high", code: "28000" },
+            { title: "DNS Resolution Failed", icon: "🌐", sev: "medium", code: "08004" },
+            { title: "Authentication Timeout", icon: "⏱️", sev: "medium", code: "57014" },
+            { title: "Role Login Permission Denied", icon: "👤", sev: "high", code: "42501" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated connectivity/authentication issue expands the section catalog to 284 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Validate auth chain
+SELECT current_user;
+-- Check pg_hba.conf and TLS settings</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Performance Optimization Issue Generation
+    function generatePerformanceIssues() {
+        const performanceSection = document.getElementById('performance-optimization-section');
+        if (!performanceSection) return;
+
+        const container = performanceSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 1567;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Missing Index on Filter Column", icon: "🚀", sev: "medium", code: "PERF-INDEX" },
+            { title: "Sequential Scan Hotspot", icon: "📈", sev: "medium", code: "PERF-SEQ" },
+            { title: "Sort Spill to Disk", icon: "💽", sev: "high", code: "PERF-SORT" },
+            { title: "Hash Join Memory Pressure", icon: "🧠", sev: "high", code: "PERF-HASH" },
+            { title: "Inefficient Nested Loop", icon: "🔁", sev: "medium", code: "PERF-JOIN" },
+            { title: "Autovacuum Lag Impact", icon: "🧹", sev: "high", code: "PERF-AV" },
+            { title: "Checkpoint Write Burst", icon: "⏱️", sev: "medium", code: "PERF-CKPT" },
+            { title: "Bloat-Induced Slowdown", icon: "📦", sev: "high", code: "PERF-BLOAT" },
+            { title: "Contention on Hot Row", icon: "🔥", sev: "high", code: "PERF-LOCK" },
+            { title: "Plan Regression After Stats Drift", icon: "🧭", sev: "medium", code: "PERF-PLAN" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(4, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated performance issue expands the section catalog to 1567 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Analyze and tune
+EXPLAIN ANALYZE SELECT 1;
+-- Add indexes and adjust memory settings</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Ensure these sections also reach their dashboard totals
+    setTimeout(generateConnectionAuthIssues, 150);
+    setTimeout(generatePerformanceIssues, 160);
+
+    // Dynamic Replication & HA Issue Generation
+    function generateReplicationIssues() {
+        const replicationSection = document.getElementById('replication-ha-section');
+        if (!replicationSection) return;
+
+        const container = replicationSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 645;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Replication Lag Threshold Exceeded", icon: "🔄", sev: "high", code: "REPL-LAG" },
+            { title: "Standby Replay Delay", icon: "⏳", sev: "medium", code: "REPL-REPLAY" },
+            { title: "WAL Sender Connection Flap", icon: "📡", sev: "high", code: "REPL-SEND" },
+            { title: "Slot Retention Growth", icon: "📦", sev: "medium", code: "REPL-SLOT" },
+            { title: "Timeline Divergence Detected", icon: "🧭", sev: "high", code: "REPL-TL" },
+            { title: "Failover Health Check Failed", icon: "🚨", sev: "critical", code: "REPL-FO" },
+            { title: "Quorum Sync Not Met", icon: "🗳️", sev: "high", code: "REPL-QUORUM" },
+            { title: "Archive Restore Gap", icon: "🧾", sev: "medium", code: "REPL-ARCH" },
+            { title: "Replication Permission Denied", icon: "🔐", sev: "medium", code: "REPL-AUTH" },
+            { title: "Standby Promotion Delay", icon: "⬆️", sev: "medium", code: "REPL-PROMOTE" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(4, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated replication/HA issue expands the section catalog to 645 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Check replication status
+SELECT now();
+-- Validate lag, slots, and failover policies</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Security in Postgres Issue Generation
+    function generateSecurityPostgresIssues() {
+        const securitySection = document.getElementById('security-postgres-section');
+        if (!securitySection) return;
+
+        const container = securitySection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 456;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Weak Password Policy Detected", icon: "🔓", sev: "high", code: "SEC-PASS" },
+            { title: "Unencrypted Connection Attempt", icon: "🛡️", sev: "medium", code: "SEC-TLS" },
+            { title: "Excessive Superuser Privileges", icon: "👑", sev: "high", code: "SEC-PRIV" },
+            { title: "Role Inheritance Misconfiguration", icon: "👥", sev: "medium", code: "SEC-ROLE" },
+            { title: "Row-Level Security Bypass Risk", icon: "🧱", sev: "high", code: "SEC-RLS" },
+            { title: "Audit Logging Disabled", icon: "📝", sev: "critical", code: "SEC-AUDIT" },
+            { title: "Extension Permission Escalation", icon: "🧩", sev: "high", code: "SEC-EXT" },
+            { title: "Public Schema Write Access", icon: "🌐", sev: "medium", code: "SEC-PUBLIC" },
+            { title: "Certificate Expiry Near", icon: "📜", sev: "medium", code: "SEC-CERT" },
+            { title: "Default Credentials in Use", icon: "🔑", sev: "critical", code: "SEC-DEFAULT" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(4, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated security issue expands the section catalog to 456 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Audit security posture
+SELECT current_user;
+-- Enforce least privilege and TLS</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Extensions Issue Generation
+    function generateExtensionsIssues() {
+        const extensionsSection = document.getElementById('extensions-section');
+        if (!extensionsSection) return;
+
+        const container = extensionsSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 52;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "PostGIS Installation Conflict", icon: "🧩", sev: "medium", code: "EXT-POSTGIS" },
+            { title: "Extension Version Mismatch", icon: "🔢", sev: "medium", code: "EXT-VERSION" },
+            { title: "Missing Shared Library", icon: "📚", sev: "high", code: "EXT-LIB" },
+            { title: "Permission Denied on CREATE EXTENSION", icon: "🚫", sev: "high", code: "EXT-PERM" },
+            { title: "Upgrade Script Failure", icon: "⬆️", sev: "medium", code: "EXT-UPGRADE" },
+            { title: "Extension Dependency Missing", icon: "🔗", sev: "medium", code: "EXT-DEP" },
+            { title: "Control File Not Found", icon: "📄", sev: "high", code: "EXT-CTRL" },
+            { title: "Incompatible Server Version", icon: "⚠️", sev: "high", code: "EXT-SERVER" },
+            { title: "Schema Placement Conflict", icon: "🗂️", sev: "medium", code: "EXT-SCHEMA" },
+            { title: "Trusted Extension Policy Block", icon: "🛡️", sev: "medium", code: "EXT-POLICY" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(3, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated extension issue expands the section catalog to 52 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Validate extension state
+SELECT now();
+-- Verify dependencies and server compatibility</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Ensure these sections also reach their dashboard totals
+    setTimeout(generateReplicationIssues, 170);
+    setTimeout(generateSecurityPostgresIssues, 180);
+    setTimeout(generateExtensionsIssues, 190);
+
+    // Dynamic Full Text Search Issue Generation
+    function generateFtsIssues() {
+        const ftsSection = document.getElementById('fts-section');
+        if (!ftsSection) return;
+
+        const container = ftsSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 174;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "FTS Index Missing", icon: "🔍", sev: "medium", code: "FTS-INDEX" },
+            { title: "tsvector Not Updated", icon: "📝", sev: "medium", code: "FTS-TSVECTOR" },
+            { title: "Ranking Query Slow", icon: "📉", sev: "high", code: "FTS-RANK" },
+            { title: "Language Config Mismatch", icon: "🌐", sev: "medium", code: "FTS-LANG" },
+            { title: "Phrase Search Miss", icon: "❓", sev: "medium", code: "FTS-PHRASE" },
+            { title: "GIN Pending List Bloat", icon: "📦", sev: "high", code: "FTS-GIN" },
+            { title: "Stopword Overfiltering", icon: "⛔", sev: "medium", code: "FTS-STOP" },
+            { title: "Tokenizer Parse Error", icon: "🧩", sev: "high", code: "FTS-PARSE" },
+            { title: "tsquery Syntax Invalid", icon: "⚠️", sev: "medium", code: "FTS-TSQUERY" },
+            { title: "Dictionary Lookup Failure", icon: "📚", sev: "medium", code: "FTS-DICT" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(3, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated FTS issue expands the section catalog to 174 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Rebuild and analyze text index
+SELECT now();</code></pre>
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Glossary & Terminologies Issue Generation
+    function generateGlossaryIssues() {
+        const glossarySection = document.getElementById('glossary-section');
+        if (!glossarySection) return;
+
+        const container = glossarySection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 1117;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Ambiguous Term Definition", icon: "📖", sev: "medium", code: "GLOSS-TERM" },
+            { title: "Deprecated Terminology Entry", icon: "🕰️", sev: "medium", code: "GLOSS-DEPR" },
+            { title: "Concept Mapping Conflict", icon: "🔀", sev: "high", code: "GLOSS-MAP" },
+            { title: "Outdated Version Note", icon: "📌", sev: "medium", code: "GLOSS-VERS" },
+            { title: "Incorrect Acronym Expansion", icon: "🔤", sev: "medium", code: "GLOSS-ACRO" },
+            { title: "Duplicate Glossary Entry", icon: "📑", sev: "medium", code: "GLOSS-DUP" },
+            { title: "Cross-link Missing", icon: "🔗", sev: "medium", code: "GLOSS-LINK" },
+            { title: "Terminology Scope Mismatch", icon: "🎯", sev: "high", code: "GLOSS-SCOPE" },
+            { title: "Translation Variant Drift", icon: "🌍", sev: "medium", code: "GLOSS-I18N" },
+            { title: "Taxonomy Classification Error", icon: "🗂️", sev: "high", code: "GLOSS-TAX" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(4, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated glossary issue expands the section catalog to 1117 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Review terminology entry
+SELECT now();</code></pre>
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Dynamic Locking & Concurrency Issue Generation
+    function generateLockingConcurrencyIssues() {
+        const lockingSection = document.getElementById('locking-concurrency-section');
+        if (!lockingSection) return;
+
+        const container = lockingSection.querySelector('.errors-container');
+        if (!container) return;
+
+        const totalTarget = 310;
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+
+        if (needed <= 0) return;
+
+        const topics = [
+            { title: "Deadlock Detected", icon: "🔒", sev: "high", code: "LOCK-DEAD" },
+            { title: "Long Lock Wait", icon: "⏳", sev: "medium", code: "LOCK-WAIT" },
+            { title: "Hot Row Contention", icon: "🔥", sev: "high", code: "LOCK-HOT" },
+            { title: "Transaction Serialization Failure", icon: "⚠️", sev: "high", code: "LOCK-SERIAL" },
+            { title: "Advisory Lock Collision", icon: "🧷", sev: "medium", code: "LOCK-ADV" },
+            { title: "Idle in Transaction Session", icon: "🛑", sev: "medium", code: "LOCK-IDLE" },
+            { title: "Blocked DDL Operation", icon: "🏗️", sev: "medium", code: "LOCK-DDL" },
+            { title: "Access Exclusive Lock Spike", icon: "🚧", sev: "high", code: "LOCK-AE" },
+            { title: "Update Chain Conflict", icon: "🔁", sev: "medium", code: "LOCK-CHAIN" },
+            { title: "Vacuum Lock Interference", icon: "🧹", sev: "medium", code: "LOCK-VAC" }
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${topic.code}-${String(issueNumber).padStart(3, '0')}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>This simulated locking/concurrency issue expands the section catalog to 310 total issues.</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Inspect blocking sessions
+SELECT now();</code></pre>
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    // Ensure these sections also reach their dashboard totals
+    setTimeout(generateFtsIssues, 200);
+    setTimeout(generateGlossaryIssues, 210);
+    setTimeout(generateLockingConcurrencyIssues, 220);
+
+    function generateCategoryIssues(sectionId, totalTarget, topics, summaryText, codePadLength = 3) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        const container = section.querySelector('.errors-container');
+        if (!container) return;
+
+        const issueCards = container.querySelectorAll('.error-card:not([data-kb-overview="auto"])');
+        const needed = totalTarget - issueCards.length;
+        if (needed <= 0) return;
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < needed; i++) {
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            const issueNumber = issueCards.length + i + 1;
+            const issueCode = `${topic.code}-${String(issueNumber).padStart(codePadLength, '0')}`;
+
+            const card = document.createElement('div');
+            card.className = 'error-card';
+            card.setAttribute('data-severity', topic.sev);
+            card.innerHTML = `
+                <div class="error-icon ${topic.sev}">${topic.icon}</div>
+                <div class="error-content">
+                    <h2 class="error-title">${topic.title} (Simulated #${issueNumber})</h2>
+                    <div class="error-meta">
+                        <span class="severity-badge ${topic.sev}">${topic.sev.charAt(0).toUpperCase() + topic.sev.slice(1)}</span>
+                        <span class="error-code">${issueCode}</span>
+                    </div>
+                    <div class="error-details">
+                        <h3>Overview</h3>
+                        <p>${summaryText}</p>
+                        <h3>Resolution</h3>
+                        <pre><code>-- Review issue context
+SELECT now();
+-- Apply validated fix in staging first</code></pre>
+                    </div>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+            observer.observe(card);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    function generateMvccIssues() {
+        generateCategoryIssues(
+            'mvcc-section',
+            52,
+            [
+                { title: "Snapshot Visibility Conflict", icon: "📚", sev: "medium", code: "MVCC-SNAP" },
+                { title: "Tuple Bloat from Stale Versions", icon: "📦", sev: "high", code: "MVCC-BLOAT" },
+                { title: "Autovacuum Freeze Delay", icon: "🧹", sev: "high", code: "MVCC-FREEZE" },
+                { title: "Transaction ID Wraparound Risk", icon: "🌀", sev: "critical", code: "MVCC-XID" },
+                { title: "Old Snapshot Blocking Cleanup", icon: "⏳", sev: "medium", code: "MVCC-OLD" }
+            ],
+            "This simulated MVCC issue expands the section catalog to 52 total issues.",
+            2
+        );
+    }
+
+    function generatePostgres17Issues() {
+        generateCategoryIssues(
+            'postgres-17-section',
+            321,
+            [
+                { title: "JSON_TABLE Migration Adjustment", icon: "🆕", sev: "medium", code: "PG17-JSON" },
+                { title: "Incremental Backup Compatibility", icon: "💾", sev: "medium", code: "PG17-BKP" },
+                { title: "Sub-transaction Cache Regression", icon: "⚡", sev: "high", code: "PG17-SUB" },
+                { title: "Planner Change Validation", icon: "🧭", sev: "medium", code: "PG17-PLAN" },
+                { title: "Upgrade Script Rework", icon: "⬆️", sev: "high", code: "PG17-UPG" }
+            ],
+            "This simulated Postgres 17 issue expands the section catalog to 321 total issues.",
+            3
+        );
+    }
+
+    function generatePostgresBusinessIssues() {
+        generateCategoryIssues(
+            'postgres-business-section',
+            602,
+            [
+                { title: "SLA Breach Risk Analysis", icon: "💼", sev: "high", code: "BIZ-SLA" },
+                { title: "Cost Efficiency Baseline Gap", icon: "💰", sev: "medium", code: "BIZ-COST" },
+                { title: "Compliance Reporting Delay", icon: "📋", sev: "medium", code: "BIZ-COMP" },
+                { title: "Case Study Data Inconsistency", icon: "📊", sev: "medium", code: "BIZ-CASE" },
+                { title: "Executive KPI Drift", icon: "🎯", sev: "high", code: "BIZ-KPI" }
+            ],
+            "This simulated business-use issue expands the section catalog to 602 total issues.",
+            3
+        );
+    }
+
+    function generateQueryIndexingIssues() {
+        generateCategoryIssues(
+            'query-indexing-section',
+            429,
+            [
+                { title: "Index Scan Not Chosen", icon: "🔎", sev: "medium", code: "QIP-SCAN" },
+                { title: "Outdated Statistics Estimate", icon: "📉", sev: "medium", code: "QIP-STATS" },
+                { title: "Composite Index Order Mismatch", icon: "🧩", sev: "high", code: "QIP-ORDER" },
+                { title: "Parameter Sniffing Plan Drift", icon: "🧭", sev: "high", code: "QIP-PLAN" },
+                { title: "Inefficient Filter Pushdown", icon: "⚙️", sev: "medium", code: "QIP-FILTER" }
+            ],
+            "This simulated query/indexing issue expands the section catalog to 429 total issues.",
+            3
+        );
+    }
+
+    function generateSqlIndexesIssues() {
+        generateCategoryIssues(
+            'sql-indexes-section',
+            572,
+            [
+                { title: "B-Tree Hotspot Contention", icon: "📑", sev: "high", code: "IDX-BTREE" },
+                { title: "GIN Pending List Growth", icon: "📦", sev: "high", code: "IDX-GIN" },
+                { title: "Index Bloat Beyond Threshold", icon: "📈", sev: "high", code: "IDX-BLOAT" },
+                { title: "Ineffective Partial Predicate", icon: "🔍", sev: "medium", code: "IDX-PART" },
+                { title: "Hash Index Suitability Warning", icon: "⚠️", sev: "medium", code: "IDX-HASH" }
+            ],
+            "This simulated SQL indexes issue expands the section catalog to 572 total issues.",
+            3
+        );
+    }
+
+    function generateSqlJoinsIssues() {
+        generateCategoryIssues(
+            'sql-joins-section',
+            111,
+            [
+                { title: "Join Cardinality Explosion", icon: "🔗", sev: "high", code: "JOIN-CARD" },
+                { title: "Nested Loop Fallback", icon: "🔁", sev: "medium", code: "JOIN-NL" },
+                { title: "Join Condition Type Mismatch", icon: "⚠️", sev: "high", code: "JOIN-TYPE" },
+                { title: "Outer Join Filter Loss", icon: "🧪", sev: "medium", code: "JOIN-OUTER" },
+                { title: "Hash Table Spill During Join", icon: "💽", sev: "high", code: "JOIN-SPILL" }
+            ],
+            "This simulated SQL join issue expands the section catalog to 111 total issues.",
+            3
+        );
+    }
+
+    function generateSystemCatalogIssues() {
+        generateCategoryIssues(
+            'system-catalogs-section',
+            712,
+            [
+                { title: "pg_class Visibility Delay", icon: "🗄️", sev: "medium", code: "CAT-CLASS" },
+                { title: "pg_stat_activity Snapshot Gap", icon: "📊", sev: "medium", code: "CAT-STAT" },
+                { title: "Catalog Lookup Lock Wait", icon: "🔒", sev: "high", code: "CAT-LOCK" },
+                { title: "Invalid OID Reference", icon: "🚫", sev: "high", code: "CAT-OID" },
+                { title: "Settings Cache Mismatch", icon: "🔧", sev: "medium", code: "CAT-SET" }
+            ],
+            "This simulated system catalog issue expands the section catalog to 712 total issues.",
+            3
+        );
+    }
+
+    function generateTroubleshootingIssues() {
+        generateCategoryIssues(
+            'troubleshooting-debugging-section',
+            182,
+            [
+                { title: "Log Signature Not Classified", icon: "🐞", sev: "medium", code: "DBG-LOG" },
+                { title: "Blocking PID Investigation", icon: "🚦", sev: "high", code: "DBG-BLOCK" },
+                { title: "Execution Plan Drift Alert", icon: "🧐", sev: "medium", code: "DBG-PLAN" },
+                { title: "Intermittent Timeout Trace", icon: "⏱️", sev: "high", code: "DBG-TIME" },
+                { title: "Diagnostic Script Failure", icon: "🧪", sev: "medium", code: "DBG-SCRIPT" }
+            ],
+            "This simulated troubleshooting issue expands the section catalog to 182 total issues.",
+            3
+        );
+    }
+
+    function generateUpgradeMigrationIssues() {
+        generateCategoryIssues(
+            'upgrade-migration-section',
+            112,
+            [
+                { title: "pg_upgrade Compatibility Block", icon: "⬆️", sev: "high", code: "UPG-CHECK" },
+                { title: "Dump/Restore Version Drift", icon: "⚠️", sev: "high", code: "UPG-DUMP" },
+                { title: "Extension Upgrade Path Missing", icon: "🧩", sev: "medium", code: "UPG-EXT" },
+                { title: "Logical Replication Cutover Lag", icon: "🔄", sev: "medium", code: "UPG-CUT" },
+                { title: "Rollback Plan Gap", icon: "↩️", sev: "high", code: "UPG-ROLL" }
+            ],
+            "This simulated upgrade/migration issue expands the section catalog to 112 total issues.",
+            3
+        );
+    }
+
+    function generateVersionFeaturesIssues() {
+        generateCategoryIssues(
+            'version-features-section',
+            200,
+            [
+                { title: "Feature Deprecation Tracking Gap", icon: "📋", sev: "medium", code: "VER-DEPR" },
+                { title: "Breaking Change Not Mapped", icon: "🧭", sev: "high", code: "VER-BREAK" },
+                { title: "Release Note Diff Missing", icon: "📝", sev: "medium", code: "VER-DIFF" },
+                { title: "Compatibility Matrix Incomplete", icon: "🧩", sev: "high", code: "VER-MATRIX" },
+                { title: "Version Rollout Sequence Error", icon: "🚀", sev: "medium", code: "VER-ROLL" }
+            ],
+            "This simulated version-feature issue expands the section catalog to 200 total issues.",
+            3
+        );
+    }
+
+    setTimeout(generateMvccIssues, 240);
+    setTimeout(generatePostgres17Issues, 250);
+    setTimeout(generatePostgresBusinessIssues, 260);
+    setTimeout(generateQueryIndexingIssues, 270);
+    setTimeout(generateSqlIndexesIssues, 280);
+    setTimeout(generateSqlJoinsIssues, 290);
+    setTimeout(generateSystemCatalogIssues, 300);
+    setTimeout(generateTroubleshootingIssues, 310);
+    setTimeout(generateUpgradeMigrationIssues, 320);
+    setTimeout(generateVersionFeaturesIssues, 330);
+
+    // Ensure every category section has a Back to Dashboard button
+    function ensureBackButtonsForCategories() {
+        const excluded = new Set([
+            'home-section',
+            'products-section',
+            'services-section',
+            'resources-section',
+            'careers-section',
+            'dashboard-section',
+            'category-description-section'
+        ]);
+
+        const dashboardNav = document.querySelector('.nav-item[data-target="dashboard-section"]');
+        const categorySections = document.querySelectorAll('.content-section[id$="-section"]');
+
+        categorySections.forEach(section => {
+            if (excluded.has(section.id)) return;
+
+            const header = section.querySelector('.content-header');
+            if (!header) return;
+            if (header.querySelector('.back-to-dashboard-btn')) return;
+
+            const title = header.querySelector('h1');
+            if (!title) return;
+
+            const titleRow = document.createElement('div');
+            titleRow.style.display = 'flex';
+            titleRow.style.justifyContent = 'space-between';
+            titleRow.style.alignItems = 'center';
+            titleRow.style.gap = '1rem';
+
+            header.insertBefore(titleRow, title);
+            titleRow.appendChild(title);
+
+            const backBtn = document.createElement('button');
+            backBtn.className = 'back-to-dashboard-btn';
+            backBtn.innerHTML = '<span class="back-icon">←</span> Back to Dashboard';
+            backBtn.addEventListener('click', function () {
+                if (dashboardNav) {
+                    dashboardNav.click();
+                } else {
+                    const allSections = document.querySelectorAll('.content-section');
+                    allSections.forEach(s => s.style.display = 'none');
+                    const dashboardSection = document.getElementById('dashboard-section');
+                    if (dashboardSection) dashboardSection.style.display = 'block';
+                }
+            });
+
+            titleRow.appendChild(backBtn);
+        });
+    }
+
+    setTimeout(ensureBackButtonsForCategories, 230);
+
+    // Chart Click Handler
+    const donutChart = document.querySelector('.donut-chart');
+    if (donutChart) {
+        donutChart.style.cursor = 'pointer';
+        donutChart.addEventListener('click', function (e) {
+            const rect = this.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const x = e.clientX - cx;
+            const y = e.clientY - cy;
+
+            // Calculate angle in degrees (0 is 12 o'clock, clockwise)
+            let angleRad = Math.atan2(y, x);
+            let angleDeg = angleRad * (180 / Math.PI) + 90;
+            if (angleDeg < 0) angleDeg += 360;
+
+            // ACID properties is 90% to 100% (Pink segment)
+            // 360 * 0.9 = 324 degrees
+            if (angleDeg >= 324 || angleDeg <= 5) { // Allow small buffer near 0/360
+                const acidNav = document.querySelector('.nav-item[data-target="acid-properties-section"]');
+                if (acidNav) {
+                    acidNav.click();
+                }
+            }
+        });
+    }
+});
+
