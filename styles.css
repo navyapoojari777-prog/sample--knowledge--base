@@ -165,6 +165,129 @@ body {
     color: #2d3748;
 }
 
+/* Dark mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode .top-nav {
+    background-color: #1f1f1f;
+}
+body.dark-mode .sidebar {
+    background-color: #1a1a1a;
+}
+body.dark-mode .container,
+body.dark-mode .content-section {
+    background-color: #121212;
+}
+body.dark-mode .error-card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+body.dark-mode .search-box input {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #444;
+}
+.dark-mode-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: inherit;
+    margin-left: 1rem;
+}
+
+/* Assistant widget */
+#assistant-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    font-family: sans-serif;
+}
+#assistant-toggle {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+#assistant-window {
+    width: 300px;
+    max-width: 90vw;
+    height: 400px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+#assistant-window.hidden {
+    display: none;
+}
+#assistant-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#assistant-messages {
+    flex: 1;
+    padding: 0.5rem;
+    overflow-y: auto;
+}
+.assistant-message.user {
+    text-align: right;
+    margin: 0.5rem 0;
+    color: #000;
+}
+.assistant-message.assistant {
+    text-align: left;
+    margin: 0.5rem 0;
+    color: #333;
+}
+#assistant-input-area {
+    padding: 0.5rem;
+    border-top: 1px solid #ccc;
+    display: flex;
+}
+#assistant-input-area input {
+    flex: 1;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+#assistant-input-area button {
+    padding: 0.4rem 0.8rem;
+}
+.assistant-options {
+    margin-top: 0.5rem;
+}
+.assistant-options button {
+    margin: 0.2rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+body.dark-mode #assistant-window,
+body.dark-mode #assistant-toggle {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+body.dark-mode #assistant-header {
+    background-color: #444;
+}
+
 /* Container */
 .container {
     display: flex;
@@ -508,7 +631,7 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    
 }
 
 .modal-content {
@@ -1189,30 +1312,6 @@ body {
     font-weight: 300;
 }
 
-/* Chat Button (Overlay) */
-.chat-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #3b82f6;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    cursor: pointer;
-    transition: transform 0.2s;
-    z-index: 1000;
-}
-
-.chat-btn:hover {
-    transform: scale(1.05);
-}
-
 /* Chart Details Card */
 .chart-details {
     display: flex;
@@ -1393,7 +1492,6 @@ body {
 }
 
 .top-nav {
-    backdrop-filter: blur(6px);
     background-color: rgba(255, 255, 255, 0.94);
     border-bottom: 1px solid rgba(29, 78, 216, 0.08);
 }

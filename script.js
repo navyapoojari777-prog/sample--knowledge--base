@@ -1492,4 +1492,367 @@ SELECT now();
             }
         });
     }
+
+    // Dark mode toggle with persistence
+    const darkToggle = document.getElementById('dark-mode-toggle');
+    function applyDarkMode(enabled) {
+        document.body.classList.toggle('dark-mode', enabled);
+        if (darkToggle) {
+            darkToggle.textContent = enabled ? '☀️' : '🌙';
+            darkToggle.title = enabled ? 'Switch to light mode' : 'Switch to dark mode';
+            darkToggle.setAttribute('aria-label', enabled ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+    }
+
+    if (darkToggle) {
+        let shouldUseDarkMode = false;
+        try {
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'true' || savedMode === 'false') {
+                shouldUseDarkMode = savedMode === 'true';
+            } else if (window.matchMedia) {
+                shouldUseDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+        } catch (e) {}
+
+        applyDarkMode(shouldUseDarkMode);
+        darkToggle.addEventListener('click', () => {
+            const nextMode = !document.body.classList.contains('dark-mode');
+            applyDarkMode(nextMode);
+            try { localStorage.setItem('darkMode', String(nextMode)); } catch (e) {}
+        });
+    }
+
+    // AI assistant: always responds, prioritizing project content
+    function initAssistant() {
+        const toggle = document.getElementById('assistant-toggle');
+        const win = document.getElementById('assistant-window');
+        const closeBtn = document.getElementById('assistant-close');
+        const sendBtn = document.getElementById('assistant-send');
+        const input = document.getElementById('assistant-input');
+        const messages = document.getElementById('assistant-messages');
+        if (!toggle || !win || !closeBtn || !sendBtn || !input || !messages) return;
+        let assistantCardSeq = 0;
+
+        const stopWords = new Set([
+            'the', 'a', 'an', 'is', 'are', 'to', 'for', 'in', 'on', 'of', 'and', 'or', 'with', 'how',
+            'what', 'where', 'when', 'why', 'can', 'you', 'i', 'me', 'my', 'this', 'that', 'about', 'please',
+            'tell', 'project', 'question', 'show', 'give', 'need'
+        ]);
+
+        function normalize(text) {
+            return (text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function tokenize(text) {
+            return normalize(text)
+                .split(' ')
+                .filter((token) => token.length > 2 && !stopWords.has(token));
+        }
+
+        function safeText(el) {
+            return (el && el.textContent ? el.textContent : '').replace(/\s+/g, ' ').trim();
+        }
+
+        function isDetailedQuery(text) {
+            const q = normalize(text);
+            return q.includes('all details') ||
+                q.includes('full details') ||
+                q.includes('complete details') ||
+                q.includes('in detail') ||
+                q.includes('detailed information') ||
+                q.includes('everything');
+        }
+
+        function getDetailBlocks(detailsEl) {
+            if (!detailsEl) return [];
+            const headings = Array.from(detailsEl.querySelectorAll('h3'));
+            if (!headings.length) {
+                const onlyText = safeText(detailsEl);
+                return onlyText ? [{ heading: 'Details', text: onlyText }] : [];
+            }
+
+            const blocks = [];
+            headings.forEach((h3) => {
+                const heading = safeText(h3) || 'Details';
+                const parts = [];
+                let node = h3.nextElementSibling;
+                while (node && node.tagName !== 'H3') {
+                    const line = safeText(node);
+                    if (line) parts.push(line);
+                    node = node.nextElementSibling;
+                }
+                const text = parts.join(' ');
+                if (text) blocks.push({ heading, text });
+            });
+            return blocks;
+        }
+
+        function buildKnowledgeIndex() {
+            const cards = Array.from(document.querySelectorAll('.content-section .error-card'));
+            return cards.map((card) => {
+                const section = card.closest('.content-section');
+                const sectionTitle = safeText(section ? section.querySelector('.content-header h1, .content-header h2') : null)
+                    || (section ? section.id : '');
+                const sectionId = section ? section.id : '';
+                const title = safeText(card.querySelector('.error-title'));
+                const code = safeText(card.querySelector('.error-code'));
+                const detailsEl = card.querySelector('.error-details');
+                const details = safeText(detailsEl);
+                const detailBlocks = getDetailBlocks(detailsEl);
+                if (!card.dataset.assistantId) {
+                    assistantCardSeq += 1;
+                    card.dataset.assistantId = `assist-card-${assistantCardSeq}`;
+                }
+                const searchable = normalize([sectionTitle, title, code, details].join(' '));
+                const isSimulated = /\(simulated/i.test(title) || /simulated/i.test(details);
+                return {
+                    sectionId,
+                    sectionTitle,
+                    title,
+                    code,
+                    details,
+                    detailBlocks,
+                    searchable,
+                    isSimulated,
+                    cardId: card.dataset.assistantId
+                };
+            }).filter((row) => row.title || row.details);
+        }
+
+        function findBestMatches(query, limit) {
+            const kbIndex = buildKnowledgeIndex();
+            const tokens = tokenize(query);
+            if (!tokens.length) return [];
+            const normalizedQuery = normalize(query);
+            const queryCompact = normalizedQuery.replace(/\s+/g, ' ').trim();
+
+            const ranked = kbIndex
+                .map((entry) => {
+                    let score = 0;
+                    const title = normalize(entry.title);
+                    const code = normalize(entry.code);
+                    const section = normalize(entry.sectionTitle);
+                    if (title && queryCompact === title) score += 320;
+                    if (title && normalizedQuery.includes(title)) score += 180;
+                    if (title && title.includes(queryCompact) && queryCompact.length >= 5) score += 70;
+                    if (code && queryCompact === code) score += 260;
+                    if (code && normalizedQuery.includes(code)) score += 160;
+                    tokens.forEach((token) => {
+                        if (title.includes(token)) score += 14;
+                        if (code.includes(token)) score += 16;
+                        if (section.includes(token)) score += 4;
+                        if (entry.searchable.includes(token)) score += 2;
+                    });
+                    if (entry.isSimulated && !normalizedQuery.includes('simulated')) score -= 20;
+                    return { entry, score };
+                })
+                .filter((x) => x.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, limit || 3)
+                .map((x) => x.entry);
+
+            return ranked;
+        }
+
+        function navigateToMatch(match) {
+            if (!match || !match.sectionId) return false;
+            const sectionId = match.sectionId;
+            const navLink = document.querySelector(`.nav-item[data-target="${sectionId}"]`);
+            if (navLink) {
+                navLink.click();
+            } else {
+                return false;
+            }
+
+            setTimeout(() => {
+                let card = document.querySelector(`.error-card[data-assistant-id="${match.cardId}"]`);
+                if (!card) {
+                    const inSection = document.querySelectorAll(`#${sectionId} .error-card`);
+                    card = Array.from(inSection).find((c) => {
+                        const t = normalize(safeText(c.querySelector('.error-title')));
+                        const code = normalize(safeText(c.querySelector('.error-code')));
+                        return t === normalize(match.title) || (code && code === normalize(match.code));
+                    });
+                }
+                if (card) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const detailsEl = card.querySelector('.error-details');
+                    if (detailsEl) detailsEl.style.display = 'block';
+                }
+            }, 120);
+
+            return true;
+        }
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = `assistant-message ${sender}`;
+            div.textContent = text;
+            div.style.whiteSpace = 'pre-wrap';
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addOptions(options) {
+            const row = document.createElement('div');
+            row.className = 'assistant-options';
+            options.forEach((label) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.addEventListener('click', () => {
+                    handleQuestion(label);
+                });
+                row.appendChild(btn);
+            });
+            messages.appendChild(row);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function buildFallbackAnswer(question) {
+            const q = normalize(question);
+            if (q.includes('performance') || q.includes('slow') || q.includes('index')) {
+                return 'General guidance: check EXPLAIN ANALYZE, validate indexes on filter/join columns, review work_mem/shared_buffers, and inspect bloat before changing query plans.';
+            }
+            if (q.includes('connection') || q.includes('login') || q.includes('auth') || q.includes('password')) {
+                return 'General guidance: verify host/port reachability, pg_hba.conf rules, user credentials, SSL mode, and remaining connection slots.';
+            }
+            if (q.includes('replication') || q.includes('wal') || q.includes('backup') || q.includes('recovery')) {
+                return 'General guidance: verify WAL retention, replication slot health, standby lag, archive command status, and backup chain consistency.';
+            }
+            if (q.includes('lock') || q.includes('deadlock') || q.includes('concurrency')) {
+                return 'General guidance: inspect blocking sessions (pg_stat_activity), lock graph, transaction scope, and ensure consistent statement order in concurrent transactions.';
+            }
+            return 'I could not find an exact match in project data, but I can still help. Ask with an error title/code, section name, or PostgreSQL topic and I will return the closest project answer.';
+        }
+
+        function buildDetailedAnswer(entry, query) {
+            const detailed = isDetailedQuery(query);
+            const tokens = tokenize(query);
+            const scoredBlocks = (entry.detailBlocks || []).map((block) => {
+                const text = normalize(`${block.heading} ${block.text}`);
+                let score = 0;
+                tokens.forEach((token) => {
+                    if (text.includes(token)) score += 1;
+                });
+                return { block, score };
+            }).sort((a, b) => b.score - a.score || a.block.text.length - b.block.text.length);
+
+            const limit = detailed ? 6 : 3;
+            const selectedBlocks = scoredBlocks.slice(0, limit).map((x) => x.block);
+
+            const parts = [
+                `Best match: ${entry.title}`,
+                entry.code ? `Code: ${entry.code}` : '',
+                entry.sectionTitle ? `Section: ${entry.sectionTitle}` : ''
+            ].filter(Boolean);
+
+            if (selectedBlocks.length) {
+                selectedBlocks.forEach((block) => {
+                    parts.push(`${block.heading}: ${block.text}`);
+                });
+            } else if (entry.details) {
+                parts.push(`Details: ${detailed ? entry.details : entry.details.slice(0, 900)}`);
+            }
+
+            return parts.join('\n');
+        }
+
+        function buildAnswer(question) {
+            const query = (question || '').trim();
+            if (!query) return null;
+
+            const lower = normalize(query);
+            if (lower === 'hi' || lower === 'hello' || lower === 'hey' || lower === 'help') {
+                return {
+                    text: 'Ask any question about this project. I will answer from the project content, and if no direct match exists I will still provide guidance.',
+                    sectionId: ''
+                };
+            }
+
+            if (lower.includes('dark mode')) {
+                return {
+                    text: 'Use the moon/sun button in the top header to toggle dark mode. Your theme preference is saved automatically.',
+                    sectionId: ''
+                };
+            }
+
+            const top = findBestMatches(query, 3);
+            if (top.length) {
+                const best = top[0];
+                const base = buildDetailedAnswer(best, query);
+                const related = top.slice(1).map((x) => x.title).filter(Boolean);
+                return {
+                    text: related.length ? `${base}\nRelated: ${related.join(', ')}` : base,
+                    sectionId: best.sectionId,
+                    cardId: best.cardId,
+                    title: best.title,
+                    code: best.code
+                };
+            }
+
+            return {
+                text: buildFallbackAnswer(query),
+                sectionId: ''
+            };
+        }
+
+        function handleQuestion(raw) {
+            const query = (raw || '').trim();
+            if (!query) return;
+            addMessage('user', query);
+            const response = buildAnswer(query);
+            if (!response) return;
+            addMessage('assistant', response.text);
+
+            if (response.sectionId) {
+                const row = document.createElement('div');
+                row.className = 'assistant-options';
+                const openBtn = document.createElement('button');
+                openBtn.textContent = 'Open Section';
+                openBtn.addEventListener('click', () => {
+                    if (navigateToMatch(response)) {
+                        addMessage('assistant', 'Opened the section.');
+                    }
+                });
+                row.appendChild(openBtn);
+                messages.appendChild(row);
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        toggle.addEventListener('click', () => {
+            win.classList.remove('hidden');
+            toggle.style.display = 'none';
+            if (!messages.children.length) {
+                addMessage('assistant', 'AI assistant is ready. Ask any question about this project.');
+                addOptions(['Connection issue', 'Performance issue', 'Replication issue']);
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            win.classList.add('hidden');
+            toggle.style.display = 'flex';
+        });
+
+        sendBtn.addEventListener('click', () => {
+            handleQuestion(input.value);
+            input.value = '';
+            input.focus();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleQuestion(input.value);
+                input.value = '';
+            }
+        });
+    }
+
+    initAssistant();
+
 });

@@ -22,6 +22,7 @@
                 <a href="#" class="nav-link active">Home</a>
 
             </nav>
+            <button id="dark-mode-toggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button>
 
         </div>
     </header>
@@ -792,7 +793,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-btn">💬</div>
                     </div>
                 </div>
             </div>
@@ -6655,6 +6655,20 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
         </div>
     </div>
 
+    <div id="assistant-container">
+        <div id="assistant-toggle" title="Open AI assistant">💬</div>
+        <div id="assistant-window" class="hidden">
+            <div id="assistant-header">
+                AI Assistant
+                <span id="assistant-close">✖️</span>
+            </div>
+            <div id="assistant-messages"></div>
+            <div id="assistant-input-area">
+                <input type="text" id="assistant-input" placeholder="Ask anything about this project...">
+                <button id="assistant-send">Send</button>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 
