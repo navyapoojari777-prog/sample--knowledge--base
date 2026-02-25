@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntelliDB Enterprise - Knowledge Base</title>
+    <title>PostgreSQL Knowledge Base</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,16 +12,16 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="header-content">
-            <div class="logo-section">
-                <div class="category-header" style="color: #1e3a8a;">
-                    <span class="category-icon">📚</span>
-                    <span class="category-text">Knowledge Base</span>
+            <div class="logo-section pg-brand">
+                <div class="pg-elephant">
+                    <img src="https://download.logo.wine/logo/PostgreSQL/PostgreSQL-Logo.wine.png" alt="PostgreSQL icon">
+                </div>
+                <div class="pg-brand-text">
+                    <span class="pg-brand-top">PostgreSQL</span>
+                    <span class="pg-brand-bottom">Knowledge Base</span>
                 </div>
             </div>
-            <nav class="main-nav">
-                <a href="#" class="nav-link active">Home</a>
-
-            </nav>
+            <nav class="main-nav" aria-label="Primary"></nav>
             <button id="dark-mode-toggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button>
 
         </div>
@@ -37,7 +37,7 @@
                 <div id="search-results-dropdown" class="search-dropdown"></div>
             </div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item" data-target="dashboard-section">
+                <a href="#" class="nav-item active" data-target="dashboard-section">
                     <span class="nav-icon">🏠</span>
                     <span>Dashboard</span>
                 </a>
@@ -57,7 +57,7 @@
                     <span class="nav-icon">⚙️</span>
                     <span>Connection & Authentication</span>
                 </a>
-                <a href="#" class="nav-item active" id="data-integrity-nav" data-target="data-integrity-section">
+                <a href="#" class="nav-item" id="data-integrity-nav" data-target="data-integrity-section">
                     <span class="nav-icon">🛡️</span>
                     <span>Data Integrity & Constraints</span>
                 </a>
@@ -6659,13 +6659,23 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
         <div id="assistant-toggle" title="Open AI assistant">💬</div>
         <div id="assistant-window" class="hidden">
             <div id="assistant-header">
-                AI Assistant
-                <span id="assistant-close">✖️</span>
+                <div class="assistant-title-wrap">
+                    <span class="assistant-avatar">🤖</span>
+                    <div class="assistant-title-text">
+                        <span class="assistant-title">PostgreSQL Assistant</span>
+                        <span class="assistant-subtitle">AI-powered database help</span>
+                    </div>
+                </div>
+                <div class="assistant-header-actions">
+                    <button type="button" class="assistant-head-btn" id="assistant-settings" title="Settings">⚙</button>
+                    <button type="button" class="assistant-head-btn" id="assistant-minimize" title="Minimize">−</button>
+                    <button type="button" class="assistant-head-btn" id="assistant-close" title="Close">✕</button>
+                </div>
             </div>
             <div id="assistant-messages"></div>
             <div id="assistant-input-area">
-                <input type="text" id="assistant-input" placeholder="Ask anything about this project...">
-                <button id="assistant-send">Send</button>
+                <input type="text" id="assistant-input" placeholder="Ask about PostgreSQL errors, performance, concepts...">
+                <button id="assistant-send">➤</button>
             </div>
         </div>
     </div>

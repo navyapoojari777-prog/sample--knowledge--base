@@ -1,6 +1,6 @@
 // Search functionality
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize: Show home section by default (top nav)
+    // Initialize: Show dashboard section by default
     const homeSection = document.getElementById('home-section');
     const productsSection = document.getElementById('products-section');
     const servicesSection = document.getElementById('services-section');
@@ -13,15 +13,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const joinErrorsSection = document.getElementById('join-errors-section');
     const postgresArchSection = document.getElementById('postgres-architecture-section');
 
-    // Show home section (top nav active)
-    if (homeSection) homeSection.style.display = 'block';
+    // Show dashboard section (top nav active)
+    if (homeSection) homeSection.style.display = 'none';
 
     // Hide all other sections
     if (productsSection) productsSection.style.display = 'none';
     if (servicesSection) servicesSection.style.display = 'none';
     if (resourcesSection) resourcesSection.style.display = 'none';
     if (careersSection) careersSection.style.display = 'none';
-    if (dashboardSection) dashboardSection.style.display = 'none';
+    if (dashboardSection) dashboardSection.style.display = 'block';
     if (introductionSection) introductionSection.style.display = 'none';
     if (acidSection) acidSection.style.display = 'none';
     if (dataIntegritySection) dataIntegritySection.style.display = 'none';
@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Simpler: just click it.
                     activeNav.click();
                 } else {
-                    // Fallback: show home, hide others
+                    // Fallback: show dashboard, hide others
                     sections.forEach(s => s.style.display = 'none');
-                    const home = document.getElementById('home-section');
-                    if (home) home.style.display = 'block';
+                    const dashboard = document.getElementById('dashboard-section');
+                    if (dashboard) dashboard.style.display = 'block';
                 }
                 return;
             }
@@ -246,7 +246,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const resourcesSection = document.getElementById('resources-section');
             const careersSection = document.getElementById('careers-section');
 
-            if (navText.includes('Home')) {
+            if (navText.includes('Dashboard')) {
+                if (dashboardSection) dashboardSection.style.display = 'block';
+            } else if (navText.includes('Home')) {
                 if (homeSection) homeSection.style.display = 'block';
             } else if (navText.includes('Products')) {
                 if (productsSection) productsSection.style.display = 'block';
@@ -257,8 +259,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (navText.includes('Careers')) {
                 if (careersSection) careersSection.style.display = 'block';
             } else {
-                // Default: show home section
-                if (homeSection) homeSection.style.display = 'block';
+                // Default: show dashboard section
+                if (dashboardSection) dashboardSection.style.display = 'block';
             }
         });
     });
@@ -1528,6 +1530,8 @@ SELECT now();
         const toggle = document.getElementById('assistant-toggle');
         const win = document.getElementById('assistant-window');
         const closeBtn = document.getElementById('assistant-close');
+        const minimizeBtn = document.getElementById('assistant-minimize');
+        const settingsBtn = document.getElementById('assistant-settings');
         const sendBtn = document.getElementById('assistant-send');
         const input = document.getElementById('assistant-input');
         const messages = document.getElementById('assistant-messages');
@@ -1829,8 +1833,12 @@ SELECT now();
             win.classList.remove('hidden');
             toggle.style.display = 'none';
             if (!messages.children.length) {
-                addMessage('assistant', 'AI assistant is ready. Ask any question about this project.');
-                addOptions(['Connection issue', 'Performance issue', 'Replication issue']);
+                addMessage(
+                    'assistant',
+                    '🔎 Error Diagnosis - Analyze and solve database errors\n⚡ Performance Optimization - Speed up your queries\n📚 Concept Explanations - Learn PostgreSQL features\n🛠 Best Practices - Get expert recommendations\n\nWhat would you like to explore today?'
+                );
+                addOptions(['Diagnose Error', 'Optimize Query', 'Explain Concept']);
+                addOptions(['Diagnose a database error', 'Optimize slow queries', 'Explain PostgreSQL concepts', 'Best practices guide']);
             }
         });
 
@@ -1838,6 +1846,19 @@ SELECT now();
             win.classList.add('hidden');
             toggle.style.display = 'flex';
         });
+
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener('click', () => {
+                win.classList.add('hidden');
+                toggle.style.display = 'flex';
+            });
+        }
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                addMessage('assistant', 'Settings are coming soon. Ask any PostgreSQL question and I will search this knowledge base for the best answer.');
+            });
+        }
 
         sendBtn.addEventListener('click', () => {
             handleQuestion(input.value);
