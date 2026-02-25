@@ -795,6 +795,254 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Added Dashboard Sections (as requested) -->
+                <div class="dashboard-extended-grid">
+                    <div class="dashboard-card severity-breakdown-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">📌</span> Severity Breakdown</h3>
+                        </div>
+                        <div class="severity-list">
+                            <div class="severity-row">
+                                <div class="severity-left">
+                                    <span class="severity-dot critical">▲</span>
+                                    <span class="severity-name">Critical</span>
+                                </div>
+                                <span class="severity-value critical">1,155</span>
+                            </div>
+                            <div class="severity-row">
+                                <div class="severity-left">
+                                    <span class="severity-dot high">▲</span>
+                                    <span class="severity-name">High</span>
+                                </div>
+                                <span class="severity-value high">1,669</span>
+                            </div>
+                            <div class="severity-row">
+                                <div class="severity-left">
+                                    <span class="severity-dot medium">◔</span>
+                                    <span class="severity-name">Medium</span>
+                                </div>
+                                <span class="severity-value medium">804</span>
+                            </div>
+                            <div class="severity-row">
+                                <div class="severity-left">
+                                    <span class="severity-dot low">▲</span>
+                                    <span class="severity-name">Low</span>
+                                </div>
+                                <span class="severity-value low">1,404</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card server-overview-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">🖥️</span> Server Overview</h3>
+                        </div>
+                        <div class="server-primary">
+                            <div class="server-icon">☰</div>
+                            <div class="server-primary-info">
+                                <div class="server-title">Primary Database</div>
+                                <div class="server-subtitle">community</div>
+                            </div>
+                            <span class="server-pill">HEALTHY</span>
+                        </div>
+                        <div class="server-metric">
+                            <div class="metric-label-row">
+                                <span>Active Connections : 50ms, 800s</span>
+                                <span>0.07%</span>
+                            </div>
+                            <div class="metric-track"><span style="width: 68%"></span></div>
+                        </div>
+                        <div class="server-metric">
+                            <div class="metric-label-row">
+                                <span>CPU Load : 030</span>
+                                <span>80% Single Dev</span>
+                            </div>
+                            <div class="metric-track"><span style="width: 54%"></span></div>
+                        </div>
+                        <div class="server-metric">
+                            <div class="metric-label-row">
+                                <span>Memory Usage</span>
+                                <span>6.0 Properties, Usach</span>
+                            </div>
+                            <div class="metric-track"><span style="width: 73%"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-extended-grid">
+                    <div class="dashboard-card issue-table-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">📄</span> Recent Errors</h3>
+                        </div>
+                        <div class="table-wrap">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Severity</th>
+                                        <th>Last Seen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0.33</td>
+                                        <td>ACID Atomicity Violation</td>
+                                        <td>Transactions</td>
+                                        <td><span class="table-pill high">High</span></td>
+                                        <td>4.4h ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.83</td>
+                                        <td>Connection & Auth</td>
+                                        <td>Connections</td>
+                                        <td><span class="table-pill medium">Medium</span></td>
+                                        <td>3.8h ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.35</td>
+                                        <td>Backup Errors</td>
+                                        <td>Operations</td>
+                                        <td><span class="table-pill low">Low</span></td>
+                                        <td>4.1h ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.36</td>
+                                        <td>JSONB & Functions</td>
+                                        <td>Schema</td>
+                                        <td><span class="table-pill medium">Medium</span></td>
+                                        <td>3.0h ago</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card issue-table-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">🧾</span> Latest Errors</h3>
+                        </div>
+                        <div class="table-wrap">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Severity</th>
+                                        <th>Category</th>
+                                        <th>Frequency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0323</td>
+                                        <td>ACID Atomicity Violations</td>
+                                        <td><span class="table-pill low">Low</span></td>
+                                        <td>SPI handlers</td>
+                                        <td>33.1%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1053</td>
+                                        <td>Connect Errors Connections</td>
+                                        <td><span class="table-pill medium">Medium</span></td>
+                                        <td>PgBouncer</td>
+                                        <td>35.7%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0336</td>
+                                        <td>Serializable Generation</td>
+                                        <td><span class="table-pill low">Low</span></td>
+                                        <td>Buffer cache</td>
+                                        <td>31.7%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0380</td>
+                                        <td>ACID Properties</td>
+                                        <td><span class="table-pill medium">Medium</span></td>
+                                        <td>Internals</td>
+                                        <td>27.7%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-extended-grid alerts-grid">
+                    <div class="dashboard-card alerts-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">🚨</span> Key Alerts</h3>
+                        </div>
+                        <div class="alerts-list">
+                            <div class="alert-row">
+                                <span class="alert-tag critical">▲</span>
+                                <div>
+                                    <div class="alert-title">ACID Monocity Violation</div>
+                                    <div class="alert-sub">Location: Txn interpretation</div>
+                                </div>
+                                <span class="alert-score">53.9%</span>
+                            </div>
+                            <div class="alert-row">
+                                <span class="alert-tag high">▲</span>
+                                <div>
+                                    <div class="alert-title">MVCC Transaction Wraparound</div>
+                                    <div class="alert-sub">Formation: schema tablespace</div>
+                                </div>
+                                <span class="alert-score">52.0%</span>
+                            </div>
+                            <div class="alert-row">
+                                <span class="alert-tag low">▲</span>
+                                <div>
+                                    <div class="alert-title">Quick Slot Derefeted</div>
+                                    <div class="alert-sub">Core termination</div>
+                                </div>
+                                <span class="alert-score">63.1%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card alerts-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">🔔</span> Active Alerts</h3>
+                        </div>
+                        <div class="alerts-list">
+                            <div class="alert-row">
+                                <span class="alert-tag critical">▢</span>
+                                <div>
+                                    <div class="alert-title">ACID Monocity Violation</div>
+                                    <div class="alert-sub">Location: interpretation35</div>
+                                </div>
+                                <span class="alert-score">63,000</span>
+                            </div>
+                            <div class="alert-row">
+                                <span class="alert-tag high">▲</span>
+                                <div>
+                                    <div class="alert-title">MVCC Transaction Wraparound</div>
+                                    <div class="alert-sub">Formation: old temp logs</div>
+                                </div>
+                                <span class="alert-score">39.0%</span>
+                            </div>
+                            <div class="alert-row">
+                                <span class="alert-tag medium">▮</span>
+                                <div>
+                                    <div class="alert-title">Vacid Read Deferred</div>
+                                    <div class="alert-sub">Bitmap snapshots</div>
+                                </div>
+                                <span class="alert-score">13.7%</span>
+                            </div>
+                            <div class="alert-row">
+                                <span class="alert-tag low">▢</span>
+                                <div>
+                                    <div class="alert-title">Cache Andation Detectles</div>
+                                    <div class="alert-sub">Curve numerics</div>
+                                </div>
+                                <span class="alert-score">85.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Introduction Section -->
