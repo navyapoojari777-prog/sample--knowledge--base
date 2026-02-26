@@ -709,17 +709,6 @@
                             <span class="stat-icon">⚠️</span>
                         </div>
                     </div>
-                    <!-- Card 4 -->
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <span class="stat-label">USER ENGAGEMENT</span>
-                            <span class="stat-value smaller">No ratings yet</span>
-                        </div>
-                        <div class="stat-icon-wrapper"
-                            style="background-color: rgba(236, 72, 153, 0.1); color: #ec4899;">
-                            <span class="stat-icon">💖</span>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Dashboard Main Grid -->
@@ -761,6 +750,39 @@
                         </div>
                     </div>
 
+                    <!-- Compact Quick Commands (fills leftover space) -->
+                    <div class="dashboard-card quick-commands-compact">
+                        <div class="card-header">
+                            <h3><span class="header-icon">⌁</span> Quick Commands</h3>
+                        </div>
+                        <div class="compact-command-grid">
+                            <div class="compact-command-item">
+                                <div class="cc-title">🔌 Connection</div>
+                                <code>psql -U user -d db</code>
+                            </div>
+                            <div class="compact-command-item">
+                                <div class="cc-title">⚡ Performance</div>
+                                <code>EXPLAIN ANALYZE ...</code>
+                            </div>
+                            <div class="compact-command-item">
+                                <div class="cc-title">👁 Monitoring</div>
+                                <code>SELECT * FROM pg_stat_activity;</code>
+                            </div>
+                            <div class="compact-command-item">
+                                <div class="cc-title">🧩 Extensions</div>
+                                <code>CREATE EXTENSION postgis;</code>
+                            </div>
+                            <div class="compact-command-item">
+                                <div class="cc-title">💾 Backup</div>
+                                <code>pg_dump -h host -U user db</code>
+                            </div>
+                            <div class="compact-command-item">
+                                <div class="cc-title">📑 Index</div>
+                                <code>CREATE INDEX idx_name ON table;</code>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Quick Access Section -->
                     <div class="dashboard-card quick-access-card">
                         <div class="card-header">
@@ -768,29 +790,46 @@
                         </div>
                         <div class="quick-access-list">
                             <!-- Item 1 -->
-                            <div class="quick-access-item">
+                            <div class="quick-access-item" data-target="acid-properties-section"
+                                data-query="atomicity violation">
                                 <div class="item-icon bg-red">⚠️</div>
                                 <div class="item-content">
                                     <h4>ACID Atomicity Violation - Partial Transaction Commit</h4>
                                     <span class="item-category">ACID PROPERTIES</span>
+                                    <div class="quick-meta">
+                                        <span class="meta-badge critical">Critical</span>
+                                        <span class="meta-text">Runbook: 2 min</span>
+                                    </div>
                                 </div>
+                                <span class="item-arrow">Open ↗</span>
                             </div>
                             <!-- Item 2 -->
-                            <div class="quick-access-item">
+                            <div class="quick-access-item" data-target="mvcc-section"
+                                data-query="wraparound">
                                 <div class="item-icon bg-red">⚠️</div>
                                 <div class="item-content">
                                     <h4>MVCC Transaction ID Wraparound</h4>
                                     <span class="item-category">MVCC (MULTI-VERSION CONCURRENCY CONTROL)</span>
+                                    <div class="quick-meta">
+                                        <span class="meta-badge high">High</span>
+                                        <span class="meta-text">Mitigation: 4 min</span>
+                                    </div>
                                 </div>
-                                <span class="item-arrow">›</span>
+                                <span class="item-arrow">Open ↗</span>
                             </div>
                             <!-- Item 3 -->
-                            <div class="quick-access-item">
+                            <div class="quick-access-item" data-target="connection-auth-section"
+                                data-query="connection refused">
                                 <div class="item-icon bg-red">⚠️</div>
                                 <div class="item-content">
                                     <h4>Connection refused</h4>
                                     <span class="item-category">CONNECTION</span>
+                                    <div class="quick-meta">
+                                        <span class="meta-badge medium">Medium</span>
+                                        <span class="meta-text">Checklist: 90 sec</span>
+                                    </div>
                                 </div>
+                                <span class="item-arrow">Open ↗</span>
                             </div>
                         </div>
                     </div>
@@ -1002,7 +1041,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="dashboard-card alerts-card">
                         <div class="card-header">
                             <h3><span class="header-icon">🔔</span> Active Alerts</h3>
@@ -1039,6 +1077,74 @@
                                     <div class="alert-sub">Curve numerics</div>
                                 </div>
                                 <span class="alert-score">85.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-command-grid">
+                    <div class="dashboard-card command-center-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">🧭</span> Ops Command Center</h3>
+                        </div>
+                        <div class="command-actions">
+                            <button class="command-btn primary">Run Health Check</button>
+                            <button class="command-btn">Open Incident Playbook</button>
+                            <button class="command-btn">Trigger Slow Query Scan</button>
+                            <button class="command-btn">Generate Daily Report</button>
+                        </div>
+                        <div class="command-kpis">
+                            <div class="kpi-chip">
+                                <span class="kpi-label">SLA</span>
+                                <span class="kpi-value">99.95%</span>
+                            </div>
+                            <div class="kpi-chip">
+                                <span class="kpi-label">MTTR</span>
+                                <span class="kpi-value">21m</span>
+                            </div>
+                            <div class="kpi-chip">
+                                <span class="kpi-label">Replication Lag</span>
+                                <span class="kpi-value">180ms</span>
+                            </div>
+                            <div class="kpi-chip">
+                                <span class="kpi-label">Open Incidents</span>
+                                <span class="kpi-value">04</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card timeline-card">
+                        <div class="card-header">
+                            <h3><span class="header-icon">⏱️</span> Incident Timeline</h3>
+                        </div>
+                        <div class="timeline-list">
+                            <div class="timeline-item">
+                                <span class="timeline-dot sev-critical"></span>
+                                <div>
+                                    <div class="timeline-title">Critical lock escalation detected</div>
+                                    <div class="timeline-meta">09:42 UTC • Cluster: primary-eu1 • Owner: DBA Team</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot sev-high"></span>
+                                <div>
+                                    <div class="timeline-title">High write latency threshold crossed</div>
+                                    <div class="timeline-meta">09:31 UTC • Service: API-Write • Owner: SRE</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot sev-medium"></span>
+                                <div>
+                                    <div class="timeline-title">Autovacuum backlog growing in analytics schema</div>
+                                    <div class="timeline-meta">09:14 UTC • Schema: analytics • Owner: Platform</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-dot sev-low"></span>
+                                <div>
+                                    <div class="timeline-title">Read replica cache warm-up completed</div>
+                                    <div class="timeline-meta">08:58 UTC • Replica: ap-south-2 • Owner: Infra</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -6904,20 +7010,14 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
     </div>
 
     <div id="assistant-container">
-        <div id="assistant-toggle" title="Open AI assistant">💬</div>
-        <div id="assistant-window" class="hidden">
+        <div id="assistant-window">
             <div id="assistant-header">
                 <div class="assistant-title-wrap">
                     <span class="assistant-avatar">🤖</span>
                     <div class="assistant-title-text">
-                        <span class="assistant-title">PostgreSQL Assistant</span>
-                        <span class="assistant-subtitle">AI-powered database help</span>
+                        <span class="assistant-title">Assistant</span>
+                        <span class="assistant-subtitle">PostgreSQL help</span>
                     </div>
-                </div>
-                <div class="assistant-header-actions">
-                    <button type="button" class="assistant-head-btn" id="assistant-settings" title="Settings">⚙</button>
-                    <button type="button" class="assistant-head-btn" id="assistant-minimize" title="Minimize">−</button>
-                    <button type="button" class="assistant-head-btn" id="assistant-close" title="Close">✕</button>
                 </div>
             </div>
             <div id="assistant-messages"></div>

@@ -1525,6 +1525,51 @@ SELECT now();
         });
     }
 
+    // Dashboard quick access navigation
+    function initQuickAccessNavigation() {
+        const quickItems = document.querySelectorAll('#dashboard-section .quick-access-card .quick-access-item[data-target]');
+        if (!quickItems.length) return;
+
+        function openFromQuickAccess(item) {
+            const targetId = item.getAttribute('data-target');
+            if (!targetId) return;
+
+            const navLink = document.querySelector(`.nav-item[data-target="${targetId}"]`);
+            if (navLink) {
+                navLink.click();
+            } else {
+                return;
+            }
+
+            const query = (item.getAttribute('data-query') || '').toLowerCase().trim();
+            if (!query) return;
+
+            setTimeout(() => {
+                const cards = Array.from(document.querySelectorAll(`#${targetId} .error-card`));
+                const match = cards.find((card) => card.textContent.toLowerCase().includes(query));
+                if (!match) return;
+
+                match.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const details = match.querySelector('.error-details');
+                if (details) details.style.display = 'block';
+            }, 180);
+        }
+
+        quickItems.forEach((item) => {
+            item.setAttribute('role', 'button');
+            item.setAttribute('tabindex', '0');
+            item.addEventListener('click', () => openFromQuickAccess(item));
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openFromQuickAccess(item);
+                }
+            });
+        });
+    }
+
+    initQuickAccessNavigation();
+
     // AI assistant: always responds, prioritizing project content
     function initAssistant() {
         const toggle = document.getElementById('assistant-toggle');
@@ -1535,7 +1580,7 @@ SELECT now();
         const sendBtn = document.getElementById('assistant-send');
         const input = document.getElementById('assistant-input');
         const messages = document.getElementById('assistant-messages');
-        if (!toggle || !win || !closeBtn || !sendBtn || !input || !messages) return;
+        if (!win || !sendBtn || !input || !messages) return;
         let assistantCardSeq = 0;
 
         const stopWords = new Set([
@@ -1628,6 +1673,20 @@ SELECT now();
             }).filter((row) => row.title || row.details);
         }
 
+        function hasSidebarNav(sectionId) {
+            if (!sectionId) return false;
+            return !!document.querySelector(`.nav-item[data-target="${sectionId}"]`);
+        }
+
+        function getIntentSectionId(query) {
+            const q = normalize(query);
+            if (!q) return '';
+            if (q.includes('connection')) return 'connection-auth-section';
+            if (q.includes('query')) return 'query-indexing-section';
+            if (q.includes('performance')) return 'performance-optimization-section';
+            return '';
+        }
+
         function findBestMatches(query, limit) {
             const kbIndex = buildKnowledgeIndex();
             const tokens = tokenize(query);
@@ -1652,6 +1711,10 @@ SELECT now();
                         if (section.includes(token)) score += 4;
                         if (entry.searchable.includes(token)) score += 2;
                     });
+                    // Prefer sections that are actually reachable from sidebar navigation.
+                    if (entry.sectionId && !hasSidebarNav(entry.sectionId)) {
+                        score -= 90;
+                    }
                     if (entry.isSimulated && !normalizedQuery.includes('simulated')) score -= 20;
                     return { entry, score };
                 })
@@ -1769,6 +1832,7 @@ SELECT now();
         function buildAnswer(question) {
             const query = (question || '').trim();
             if (!query) return null;
+            const intentSectionId = getIntentSectionId(query);
 
             const lower = normalize(query);
             if (lower === 'hi' || lower === 'hello' || lower === 'hey' || lower === 'help') {
@@ -1787,15 +1851,27 @@ SELECT now();
 
             const top = findBestMatches(query, 3);
             if (top.length) {
-                const best = top[0];
+                const best = top.find((x) => x.sectionId && x.sectionId === intentSectionId && hasSidebarNav(x.sectionId))
+                    || top.find((x) => x.sectionId && hasSidebarNav(x.sectionId))
+                    || top[0];
                 const base = buildDetailedAnswer(best, query);
                 const related = top.slice(1).map((x) => x.title).filter(Boolean);
+                const resolvedSectionId = (intentSectionId && hasSidebarNav(intentSectionId))
+                    ? intentSectionId
+                    : best.sectionId;
                 return {
                     text: related.length ? `${base}\nRelated: ${related.join(', ')}` : base,
-                    sectionId: best.sectionId,
+                    sectionId: resolvedSectionId,
                     cardId: best.cardId,
                     title: best.title,
                     code: best.code
+                };
+            }
+
+            if (intentSectionId && hasSidebarNav(intentSectionId)) {
+                return {
+                    text: buildFallbackAnswer(query),
+                    sectionId: intentSectionId
                 };
             }
 
@@ -1829,28 +1905,37 @@ SELECT now();
             }
         }
 
-        toggle.addEventListener('click', () => {
-            win.classList.remove('hidden');
-            toggle.style.display = 'none';
+        function seedAssistantIntro() {
             if (!messages.children.length) {
                 addMessage(
                     'assistant',
-                    '🔎 Error Diagnosis - Analyze and solve database errors\n⚡ Performance Optimization - Speed up your queries\n📚 Concept Explanations - Learn PostgreSQL features\n🛠 Best Practices - Get expert recommendations\n\nWhat would you like to explore today?'
+                    "Hello! 👋 I'm your PostgreSQL assistant."
                 );
-                addOptions(['Diagnose Error', 'Optimize Query', 'Explain Concept']);
-                addOptions(['Diagnose a database error', 'Optimize slow queries', 'Explain PostgreSQL concepts', 'Best practices guide']);
+                addOptions(['Connection Issues', 'Query Problems', 'Performance Issues']);
             }
-        });
+        }
 
-        closeBtn.addEventListener('click', () => {
-            win.classList.add('hidden');
-            toggle.style.display = 'flex';
-        });
+        seedAssistantIntro();
+
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                win.classList.remove('hidden');
+                toggle.style.display = 'none';
+                seedAssistantIntro();
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                win.classList.add('hidden');
+                if (toggle) toggle.style.display = 'flex';
+            });
+        }
 
         if (minimizeBtn) {
             minimizeBtn.addEventListener('click', () => {
                 win.classList.add('hidden');
-                toggle.style.display = 'flex';
+                if (toggle) toggle.style.display = 'flex';
             });
         }
 
