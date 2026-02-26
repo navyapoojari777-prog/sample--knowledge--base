@@ -7010,6 +7010,7 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
     </div>
 
     <div id="assistant-container">
+        <button id="assistant-toggle" style="display: none;" aria-label="Open assistant">🤖</button>
         <div id="assistant-window">
             <div id="assistant-header">
                 <div class="assistant-title-wrap">
@@ -7018,6 +7019,9 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
                         <span class="assistant-title">Assistant</span>
                         <span class="assistant-subtitle">PostgreSQL help</span>
                     </div>
+                </div>
+                <div class="assistant-header-actions">
+                    <button id="assistant-close" class="assistant-head-btn" aria-label="Close assistant">×</button>
                 </div>
             </div>
             <div id="assistant-messages"></div>

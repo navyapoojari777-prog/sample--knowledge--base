@@ -2634,7 +2634,14 @@ body {
 
 /* Professional assistant redesign */
 #assistant-toggle {
-    display: none !important;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #c8d2e1;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ffffff, #eaf0f8);
+    color: #2352aa;
+    box-shadow: 0 8px 20px rgba(17, 36, 73, 0.2);
+    cursor: pointer;
 }
 
 #assistant-container {
@@ -2644,8 +2651,7 @@ body {
     z-index: 1100;
 }
 
-#assistant-window,
-#assistant-window.hidden {
+#assistant-window {
     display: flex !important;
     width: 340px;
     max-width: calc(100vw - 18px);
@@ -2658,12 +2664,21 @@ body {
     flex-direction: column;
 }
 
+#assistant-window.hidden {
+    display: none !important;
+}
+
 #assistant-header {
     min-height: 54px !important;
     padding: 10px 12px !important;
     border-bottom: 1px solid #d8e0ec;
     background: #edf1f6 !important;
     color: #1f2c43 !important;
+}
+
+.assistant-head-btn {
+    color: #3b4a63 !important;
+    font-size: 20px !important;
 }
 
 .assistant-title-wrap {
