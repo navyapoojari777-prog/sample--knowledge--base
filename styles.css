@@ -2935,3 +2935,340 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Enterprise SaaS enhancement layer */
+#dashboard-section.enterprise-saas {
+    position: relative;
+    border-radius: 22px;
+    padding: 1.2rem;
+    background:
+        radial-gradient(920px 360px at -6% -16%, rgba(58, 151, 255, 0.22), transparent 56%),
+        radial-gradient(700px 320px at 105% -6%, rgba(78, 186, 255, 0.15), transparent 58%),
+        linear-gradient(155deg, #0c1a3d 0%, #122a58 52%, #0f2650 100%);
+    border: 1px solid rgba(168, 205, 255, 0.24);
+    box-shadow: 0 24px 56px rgba(4, 14, 36, 0.3);
+}
+
+#dashboard-section.enterprise-saas .content-header h1 {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    letter-spacing: -0.02em;
+    color: #f3f8ff;
+}
+
+#dashboard-section.enterprise-saas .subtitle {
+    color: rgba(213, 232, 255, 0.9);
+}
+
+#dashboard-section.enterprise-saas .enterprise-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.9rem;
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(186, 216, 255, 0.34);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#dashboard-section.enterprise-saas .toolbar-left,
+#dashboard-section.enterprise-saas .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+#dashboard-section.enterprise-saas .enterprise-search {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 320px;
+    padding: 0.5rem 0.72rem;
+    border-radius: 12px;
+    background: rgba(14, 34, 78, 0.62);
+    border: 1px solid rgba(183, 211, 255, 0.38);
+}
+
+#dashboard-section.enterprise-saas .enterprise-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #f5f9ff;
+}
+
+#dashboard-section.enterprise-saas .enterprise-search input::placeholder {
+    color: rgba(200, 222, 255, 0.76);
+}
+
+#dashboard-section.enterprise-saas .search-kbd {
+    color: #d5e6ff;
+    font-weight: 700;
+    font-size: 0.72rem;
+    border: 1px solid rgba(181, 210, 255, 0.42);
+    border-radius: 8px;
+    padding: 0.18rem 0.36rem;
+}
+
+#dashboard-section.enterprise-saas .enterprise-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.36rem;
+    padding: 0.3rem;
+    border-radius: 12px;
+    border: 1px solid rgba(184, 213, 255, 0.36);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#dashboard-section.enterprise-saas .env-btn,
+#dashboard-section.enterprise-saas .view-btn,
+#dashboard-section.enterprise-saas .action-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 0.45rem 0.68rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #d5e8ff;
+    background: transparent;
+    cursor: pointer;
+}
+
+#dashboard-section.enterprise-saas .env-btn.active,
+#dashboard-section.enterprise-saas .view-btn.active {
+    color: #ffffff;
+    background: linear-gradient(95deg, #2a84ff, #1d63e0);
+}
+
+#dashboard-section.enterprise-saas .action-btn.ghost {
+    border: 1px solid rgba(184, 213, 255, 0.44);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#dashboard-section.enterprise-saas .action-btn.primary {
+    border: 1px solid rgba(178, 210, 255, 0.88);
+    color: #f3f8ff;
+    background: linear-gradient(95deg, #2680ff, #1e5fe0);
+}
+
+#dashboard-section.enterprise-saas .enterprise-ux-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 0.7rem;
+    margin-bottom: 0.85rem;
+}
+
+#dashboard-section.enterprise-saas .ux-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.58rem;
+    padding: 0.7rem;
+    border-radius: 14px;
+    border: 1px solid rgba(188, 215, 255, 0.34);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#dashboard-section.enterprise-saas .ux-chip strong {
+    display: block;
+    color: #f1f7ff;
+    font-size: 0.84rem;
+}
+
+#dashboard-section.enterprise-saas .ux-chip small {
+    color: rgba(207, 227, 255, 0.84);
+    font-size: 0.74rem;
+}
+
+#dashboard-section.enterprise-saas .ux-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.08);
+}
+
+#dashboard-section.enterprise-saas .ux-dot.ok { background: #34d399; }
+#dashboard-section.enterprise-saas .ux-dot.info { background: #60a5fa; }
+#dashboard-section.enterprise-saas .ux-dot.warn { background: #f59e0b; }
+
+#dashboard-section.enterprise-saas .enterprise-detail-panel {
+    border-radius: 14px;
+    padding: 0.8rem 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(189, 217, 255, 0.36);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#dashboard-section.enterprise-saas .edp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#dashboard-section.enterprise-saas .edp-header h3 {
+    color: #f5f9ff;
+    font-size: 0.95rem;
+}
+
+#dashboard-section.enterprise-saas #edp-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0f3164;
+    background: #dbeafe;
+    border: 1px solid #a7c7f5;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+}
+
+#dashboard-section.enterprise-saas #edp-desc {
+    color: rgba(216, 233, 255, 0.92);
+    margin-top: 0.4rem;
+    font-size: 0.84rem;
+}
+
+#dashboard-section.enterprise-saas #edp-list {
+    margin-top: 0.4rem;
+    padding-left: 1rem;
+}
+
+#dashboard-section.enterprise-saas #edp-list li {
+    color: rgba(206, 226, 255, 0.94);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 1200px) {
+    #dashboard-section.enterprise-saas .enterprise-ux-strip {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    #dashboard-section.enterprise-saas {
+        padding: 0.95rem;
+    }
+
+    #dashboard-section.enterprise-saas .enterprise-toolbar,
+    #dashboard-section.enterprise-saas .toolbar-left,
+    #dashboard-section.enterprise-saas .toolbar-right {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #dashboard-section.enterprise-saas .enterprise-search {
+        min-width: 0;
+    }
+
+    #dashboard-section.enterprise-saas .enterprise-ux-strip {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mode-specific dashboard theme (explicit) */
+body:not(.dark-mode) #dashboard-section.enterprise-saas {
+    background:
+        radial-gradient(920px 360px at -6% -16%, rgba(81, 160, 255, 0.2), transparent 56%),
+        radial-gradient(700px 320px at 105% -6%, rgba(128, 200, 255, 0.2), transparent 58%),
+        linear-gradient(155deg, #d7ebff 0%, #cce4ff 52%, #dff0ff 100%) !important;
+    border-color: #a9cdf8 !important;
+}
+
+body:not(.dark-mode) #dashboard-section.enterprise-saas .enterprise-toolbar,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .ux-chip,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .enterprise-detail-panel,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .stat-card,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .dashboard-card,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .severity-list,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .server-primary,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .alerts-list,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .dashboard-table thead,
+body:not(.dark-mode) #dashboard-section.enterprise-saas .dashboard-table tbody tr {
+    background: rgba(255, 255, 255, 0.78) !important;
+    border-color: #b7d7fd !important;
+}
+
+body:not(.dark-mode) #dashboard-section.enterprise-saas,
+body:not(.dark-mode) #dashboard-section.enterprise-saas * {
+    color: #000000 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas {
+    background:
+        radial-gradient(920px 360px at -6% -16%, rgba(33, 103, 220, 0.2), transparent 56%),
+        radial-gradient(700px 320px at 105% -6%, rgba(44, 128, 240, 0.16), transparent 58%),
+        linear-gradient(155deg, #071430 0%, #0d234a 52%, #0a1f43 100%) !important;
+    border-color: rgba(115, 163, 235, 0.36) !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-toolbar,
+body.dark-mode #dashboard-section.enterprise-saas .ux-chip,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-detail-panel,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .severity-list,
+body.dark-mode #dashboard-section.enterprise-saas .server-primary,
+body.dark-mode #dashboard-section.enterprise-saas .alerts-list,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table thead,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table tbody tr {
+    background: rgba(18, 42, 86, 0.82) !important;
+    border-color: rgba(119, 163, 233, 0.38) !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section.enterprise-saas * {
+    color: #ffffff !important;
+}
+
+/* Dark mode: keep Severity Breakdown text black */
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-name,
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-value,
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-value.critical,
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-value.high,
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-value.medium,
+body.dark-mode #dashboard-section .severity-breakdown-card .severity-value.low {
+    color: #000000 !important;
+}
+
+/* Category sections theme mapping: dark mode -> dark blue, light mode -> light blue */
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) .error-card,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
+body.dark-mode .content-section:not(#dashboard-section) .code-lang,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    background: #102a58 !important;
+    color: #ffffff !important;
+    border-color: rgba(132, 172, 238, 0.4) !important;
+}
+
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) .error-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .category-info-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-header,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-body,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .code-snippet-box pre,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .code-lang {
+    background: #dcebff !important;
+    color: #000000 !important;
+    border-color: rgba(140, 182, 248, 0.45) !important;
+}
+
+/* Dark mode: force black text for requested dashboard elements */
+body.dark-mode #dashboard-section .chart-instruction-box,
+body.dark-mode #dashboard-section .chart-instruction-box *,
+body.dark-mode #dashboard-section .chart-center-text,
+body.dark-mode #dashboard-section .chart-center-text *,
+body.dark-mode #dashboard-section .command-center-card .command-btn,
+body.dark-mode #dashboard-section .command-center-card .command-btn *,
+body.dark-mode #dashboard-section .command-center-card .kpi-chip,
+body.dark-mode #dashboard-section .command-center-card .kpi-chip * {
+    color: #000000 !important;
+}
+
+/* Light mode: force all category-section text to black */
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) * {
+    color: #000000 !important;
+}

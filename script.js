@@ -1570,6 +1570,110 @@ SELECT now();
 
     initQuickAccessNavigation();
 
+    function initEnterpriseDashboardUX() {
+        const panel = document.getElementById('enterprise-detail-panel');
+        if (!panel) return;
+
+        const titleEl = document.getElementById('edp-title');
+        const badgeEl = document.getElementById('edp-badge');
+        const descEl = document.getElementById('edp-desc');
+        const listEl = document.getElementById('edp-list');
+
+        function updateDetail(title, badge, desc, items) {
+            if (!titleEl || !badgeEl || !descEl || !listEl) return;
+            titleEl.textContent = title;
+            badgeEl.textContent = badge;
+            descEl.textContent = desc;
+            listEl.innerHTML = '';
+            (items || []).forEach((entry) => {
+                const li = document.createElement('li');
+                li.textContent = entry;
+                listEl.appendChild(li);
+            });
+        }
+
+        const envButtons = document.querySelectorAll('#dashboard-section .env-btn');
+        envButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                envButtons.forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                const env = btn.textContent.trim();
+                updateDetail(
+                    `Environment: ${env}`,
+                    'Context',
+                    `Dashboard controls now focus ${env} workflows.`,
+                    [
+                        `${env} incidents are prioritized in triage commands.`,
+                        'Alerts and runbooks align to this selected environment.',
+                        'Create Incident will open with this environment context.'
+                    ]
+                );
+            });
+        });
+
+        const viewButtons = document.querySelectorAll('#dashboard-section .view-btn');
+        viewButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                viewButtons.forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                const view = btn.textContent.trim();
+                updateDetail(
+                    `View Mode: ${view}`,
+                    'View',
+                    `${view} perspective is active.`,
+                    [
+                        'Executive: KPI and trend focus.',
+                        'Operations: action queue and incident response focus.',
+                        'Reliability: prevention and stability signals focus.'
+                    ]
+                );
+            });
+        });
+
+        const actionButtons = document.querySelectorAll('#dashboard-section .action-btn');
+        actionButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const label = btn.textContent.trim();
+                if (label === 'Quick Triage') {
+                    updateDetail(
+                        'Quick Triage Started',
+                        'Action',
+                        'Incident candidates were grouped by severity and service.',
+                        [
+                            'Critical cluster count estimated from active alerts.',
+                            'Recommended owner queue generated for first response.',
+                            'Escalation path linked to command center actions.'
+                        ]
+                    );
+                } else if (label === 'Export Snapshot') {
+                    updateDetail(
+                        'Snapshot Prepared',
+                        'Export',
+                        'A point-in-time dashboard summary is ready.',
+                        [
+                            'Includes KPI, chart, and latest alert sections.',
+                            'Format profile: PDF summary + CSV attachments.',
+                            'Timestamp uses current dashboard context.'
+                        ]
+                    );
+                } else if (label === 'Create Incident') {
+                    updateDetail(
+                        'Incident Draft Opened',
+                        'Incident',
+                        'New incident draft initialized from current dashboard view.',
+                        [
+                            'Priority recommendation attached.',
+                            'Environment and view context copied into draft.',
+                            'Runbook suggestions included for faster mitigation.'
+                        ]
+                    );
+                }
+            });
+        });
+    }
+
+    initEnterpriseDashboardUX();
+
     // AI assistant: always responds, prioritizing project content
     function initAssistant() {
         const toggle = document.getElementById('assistant-toggle');

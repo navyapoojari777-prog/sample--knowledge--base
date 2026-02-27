@@ -668,10 +668,69 @@
             </div>
 
             <!-- Dashboard Section -->
-            <div class="content-section" id="dashboard-section" style="display: none;">
+            <div class="content-section enterprise-saas" id="dashboard-section" style="display: none;">
                 <div class="content-header">
                     <h1>Dashboard</h1>
                     <p class="subtitle">Overview of your PostgreSQL knowledge base and quick access to key resources</p>
+                </div>
+
+                <div class="enterprise-toolbar">
+                    <div class="toolbar-left">
+                        <div class="enterprise-search">
+                            <span class="search-kbd">⌘K</span>
+                            <input type="text" placeholder="Search incidents, owners, runbooks..." aria-label="Enterprise dashboard search">
+                        </div>
+                        <div class="enterprise-switch" role="tablist" aria-label="Environment">
+                            <button class="env-btn active" type="button">Production</button>
+                            <button class="env-btn" type="button">Staging</button>
+                            <button class="env-btn" type="button">Development</button>
+                        </div>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="action-btn ghost" type="button">Quick Triage</button>
+                        <button class="action-btn ghost" type="button">Export Snapshot</button>
+                        <button class="action-btn primary" type="button">Create Incident</button>
+                    </div>
+                </div>
+
+                <div class="enterprise-ux-strip">
+                    <div class="ux-chip">
+                        <span class="ux-dot ok"></span>
+                        <div>
+                            <strong>Live Event Stream</strong>
+                            <small>Webhooks + logs synced every 12s</small>
+                        </div>
+                    </div>
+                    <div class="ux-chip">
+                        <span class="ux-dot info"></span>
+                        <div>
+                            <strong>AI Correlation</strong>
+                            <small>Root-cause grouping enabled</small>
+                        </div>
+                    </div>
+                    <div class="ux-chip">
+                        <span class="ux-dot warn"></span>
+                        <div>
+                            <strong>On-call Window</strong>
+                            <small>Next handoff in 32 minutes</small>
+                        </div>
+                    </div>
+                    <div class="enterprise-switch view-switch" role="tablist" aria-label="Dashboard view">
+                        <button class="view-btn active" type="button">Executive</button>
+                        <button class="view-btn" type="button">Operations</button>
+                        <button class="view-btn" type="button">Reliability</button>
+                    </div>
+                </div>
+
+                <div class="enterprise-detail-panel" id="enterprise-detail-panel" aria-live="polite">
+                    <div class="edp-header">
+                        <h3 id="edp-title">Workspace Context</h3>
+                        <span id="edp-badge">Live</span>
+                    </div>
+                    <p id="edp-desc">Use the controls above to switch environment, change views, and run actions.</p>
+                    <ul id="edp-list">
+                        <li>All existing dashboard metrics and values remain unchanged.</li>
+                    </ul>
                 </div>
 
                 <!-- Dashboard Stats Row -->
