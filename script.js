@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.querySelector('.search-input');
     const errorCards = document.querySelectorAll('.error-card');
 
-    if (searchInput) {
+    if (searchInput && typeof window.handleLiveSearch !== 'function') {
         searchInput.addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase().trim();
             const sections = document.querySelectorAll('.content-section');

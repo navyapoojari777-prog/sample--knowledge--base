@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PostgreSQL Knowledge Base</title>
+    <title>IntelliDB Knowledge Base</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,14 +12,8 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="header-content">
-            <div class="logo-section pg-brand">
-                <div class="pg-elephant">
-                    <img src="https://download.logo.wine/logo/PostgreSQL/PostgreSQL-Logo.wine.png" alt="PostgreSQL icon">
-                </div>
-                <div class="pg-brand-text">
-                    <span class="pg-brand-top">PostgreSQL</span>
-                    <span class="pg-brand-bottom">Knowledge Base</span>
-                </div>
+            <div class="logo-section intellidb-brand">
+                <img class="intellidb-brand-logo" src="intellidb-logo.svg" alt="IntelliDB Enterprise logo">
             </div>
             <nav class="main-nav" aria-label="Primary"></nav>
             <button id="dark-mode-toggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button>
@@ -2534,82 +2528,102 @@ ANALYZE VERBOSE;</code></pre>
                 });
                 // Dynamic Search Indexing
                 var searchIndex = [];
+                var highlightedSearchIndex = -1;
 
                 function normalizeSearchText(value) {
-                    return (value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+                    return (value || '')
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s]/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                }
+
+                function tokenizeSearch(value) {
+                    return normalizeSearchText(value).split(' ').filter(token => token.length > 1);
+                }
+
+                function escapeHtml(text) {
+                    return String(text || '')
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+                }
+
+                function getTagColorBySeverity(severityBadge) {
+                    const severity = normalizeSearchText(severityBadge || '');
+                    if (severity.includes('critical') || severity.includes('high')) return 'red';
+                    if (severity.includes('warning') || severity.includes('medium')) return 'yellow';
+                    if (severity.includes('low') || severity.includes('info')) return 'green';
+                    return 'blue';
                 }
 
                 function buildSearchIndex() {
                     const index = [];
+                    const seen = new Set();
 
-                    // 1. Index Error Cards (Main Content)
                     document.querySelectorAll('.error-card').forEach(card => {
                         const title = card.querySelector('.error-title')?.textContent.trim() || '';
-                        const desc = card.querySelector('.error-details p')?.textContent.trim() || '';
-                        const severityBadge = card.querySelector('.severity-badge')?.textContent.trim();
-                        const errorCode = card.querySelector('.error-code')?.textContent.trim();
-                        const fullText = normalizeSearchText(card.textContent);
+                        const detailsText = card.querySelector('.error-details')?.textContent?.replace(/\s+/g, ' ').trim() || '';
+                        const desc = detailsText.slice(0, 220);
+                        const severityBadge = card.querySelector('.severity-badge')?.textContent.trim() || '';
+                        const errorCode = card.querySelector('.error-code')?.textContent.trim() || '';
+                        const section = card.closest('.content-section');
+                        const sectionId = section?.id || '';
+                        const categoryName = section?.querySelector('.content-header h1, .content-header h2')?.textContent.trim() || 'General';
+                        const fullText = normalizeSearchText([title, detailsText, severityBadge, errorCode, categoryName].join(' '));
+                        const uniqueKey = `${sectionId}::${normalizeSearchText(title)}::${normalizeSearchText(errorCode)}`;
 
-                        // Determine tag based on context or severity
-                        let tag = "Issue";
+                        if (!title || seen.has(uniqueKey)) return;
+                        seen.add(uniqueKey);
+
+                        let tag = 'Issue';
                         if (errorCode) tag = `${severityBadge || 'Issue'} • ${errorCode}`;
                         else if (severityBadge) tag = severityBadge;
 
-                        // Find parent section ID
-                        const section = card.closest('.content-section');
-                        const sectionId = section?.id;
-                        const categoryName = section?.querySelector('h1')?.textContent.trim() || "General";
-
-                        if (title) {
-                            index.push({
-                                title: title,
-                                desc: desc,
-                                tag: tag, // e.g. "Critical • ACID-A"
-                                tagColor: severityBadge?.toLowerCase().includes('high') ? 'red' : 'blue',
-                                sectionId: sectionId,
-                                category: categoryName,
-                                element: card, // Reference to scroll to
-                                fullText: fullText
-                            });
-                        }
+                        index.push({
+                            title: title,
+                            desc: desc,
+                            tag: tag,
+                            tagColor: getTagColorBySeverity(severityBadge),
+                            sectionId: sectionId,
+                            category: categoryName,
+                            element: card,
+                            fullText: fullText
+                        });
                     });
 
-                    // 2. Index Category Details (if pre-populated or static)
-                    // (The category details section in this file is dynamic/template, so we index the source data if possible, 
-                    // or just reliance on the error cards which seem to be the detailed content)
-
-                    // 3. Index Quick Access Items
                     document.querySelectorAll('.quick-access-item').forEach(item => {
                         const title = item.querySelector('h4')?.textContent.trim();
-                        const category = item.querySelector('.item-category')?.textContent.trim();
-
-                        if (title) {
-                            index.push({
-                                title: title,
-                                desc: `Quick access to ${category.toLowerCase()} issues.`,
-                                tag: "Quick Access",
-                                tagColor: "green",
-                                category: category,
-                                // These link to sections usually, we can try to map them
-                                sectionId: "dashboard-section" // Default, logic might need to handle specific mappings
-                            });
-                        }
+                        const category = item.querySelector('.item-category')?.textContent.trim() || 'General';
+                        if (!title) return;
+                        index.push({
+                            title: title,
+                            desc: `Quick access to ${category.toLowerCase()} issues.`,
+                            tag: 'Quick Access',
+                            tagColor: 'green',
+                            category: category,
+                            sectionId: 'dashboard-section',
+                            element: item,
+                            fullText: normalizeSearchText(`${title} ${category}`)
+                        });
                     });
 
-                    // 4. Index Stat Cards
                     document.querySelectorAll('.stat-card').forEach(card => {
                         const label = card.querySelector('.stat-label')?.textContent.trim();
                         const value = card.querySelector('.stat-value')?.textContent.trim();
-                        if (label) {
-                            index.push({
-                                title: label,
-                                desc: `Dashboard statistic: ${value}`,
-                                tag: "Dashboard",
-                                tagColor: "yellow",
-                                sectionId: "dashboard-section",
-                                category: "Dashboard"
-                            });
-                        }
+                        if (!label) return;
+                        index.push({
+                            title: label,
+                            desc: `Dashboard statistic: ${value || ''}`.trim(),
+                            tag: 'Dashboard',
+                            tagColor: 'yellow',
+                            sectionId: 'dashboard-section',
+                            category: 'Dashboard',
+                            element: card,
+                            fullText: normalizeSearchText(`${label} ${value || ''}`)
+                        });
                     });
 
                     return index;
@@ -2622,34 +2636,102 @@ ANALYZE VERBOSE;</code></pre>
                 function runSearch(query) {
                     const normalizedQuery = normalizeSearchText(query);
                     if (!normalizedQuery) return [];
+                    const tokens = tokenizeSearch(query);
 
-                    return searchIndex
-                        .filter(item =>
-                            normalizeSearchText(item.title).includes(normalizedQuery) ||
-                            normalizeSearchText(item.desc).includes(normalizedQuery) ||
-                            normalizeSearchText(item.tag).includes(normalizedQuery) ||
-                            normalizeSearchText(item.category).includes(normalizedQuery) ||
-                            (item.fullText || '').includes(normalizedQuery)
-                        )
-                        .sort((a, b) => {
-                            const aTitle = normalizeSearchText(a.title);
-                            const bTitle = normalizeSearchText(b.title);
-                            const aStarts = aTitle.startsWith(normalizedQuery) ? 1 : 0;
-                            const bStarts = bTitle.startsWith(normalizedQuery) ? 1 : 0;
-                            if (aStarts !== bStarts) return bStarts - aStarts;
-                            const aInTitle = aTitle.includes(normalizedQuery) ? 1 : 0;
-                            const bInTitle = bTitle.includes(normalizedQuery) ? 1 : 0;
-                            if (aInTitle !== bInTitle) return bInTitle - aInTitle;
-                            return aTitle.localeCompare(bTitle);
+                    const ranked = searchIndex.map(item => {
+                        const title = normalizeSearchText(item.title);
+                        const desc = normalizeSearchText(item.desc);
+                        const tag = normalizeSearchText(item.tag);
+                        const category = normalizeSearchText(item.category);
+                        const body = item.fullText || '';
+                        let score = 0;
+
+                        if (title === normalizedQuery) score += 140;
+                        if (title.startsWith(normalizedQuery)) score += 90;
+                        if (title.includes(normalizedQuery)) score += 65;
+                        if (category.includes(normalizedQuery)) score += 32;
+                        if (tag.includes(normalizedQuery)) score += 24;
+                        if (desc.includes(normalizedQuery)) score += 18;
+                        if (body.includes(normalizedQuery)) score += 12;
+
+                        tokens.forEach(token => {
+                            if (title.includes(token)) score += 20;
+                            if (category.includes(token)) score += 8;
+                            if (tag.includes(token)) score += 8;
+                            if (desc.includes(token)) score += 6;
+                            if (body.includes(token)) score += 3;
                         });
+
+                        return { item, score };
+                    }).filter(row => row.score > 0);
+
+                    ranked.sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title));
+                    return ranked.map(row => row.item);
+                }
+
+                function openSearchResult(item) {
+                    if (!item) return;
+                    const dropdown = document.getElementById('search-results-dropdown');
+                    const input = document.getElementById('search-input');
+
+                    if (item.sectionId) {
+                        const navItem = document.querySelector(`.nav-item[data-target="${item.sectionId}"]`);
+                        if (navItem) navItem.click();
+                        else if (typeof showSection === 'function') showSection(item.sectionId);
+                    } else if (typeof showSection === 'function') {
+                        showSection('dashboard-section');
+                    }
+
+                    if (item.element && typeof item.element.scrollIntoView === 'function') {
+                        setTimeout(() => {
+                            item.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            const details = item.element.querySelector?.('.error-details');
+                            if (details) details.style.display = 'block';
+                        }, 110);
+                    }
+
+                    input.value = item.title;
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('active');
+                    highlightedSearchIndex = -1;
+                }
+
+                function renderSearchResults(results, query, totalCount) {
+                    const dropdown = document.getElementById('search-results-dropdown');
+                    dropdown.innerHTML = '';
+                    highlightedSearchIndex = -1;
+
+                    const summary = document.createElement('div');
+                    summary.className = 'search-result-item search-summary';
+                    summary.textContent = `${totalCount} result${totalCount === 1 ? '' : 's'}`;
+                    dropdown.appendChild(summary);
+
+                    const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`(${safeQuery})`, 'gi');
+
+                    results.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'search-result-item search-hit';
+                        div.onclick = () => openSearchResult(item);
+                        const highlightedTitle = escapeHtml(item.title).replace(regex, '<span class="highlight">$1</span>');
+                        div.innerHTML = `
+                            <div class="result-header">
+                                <span class="result-tag tag-${item.tagColor}">${escapeHtml(item.tag || 'Result')}</span>
+                            </div>
+                            <div class="result-title">${highlightedTitle}</div>
+                            <div class="result-desc">${escapeHtml(item.desc || item.category || '')}</div>
+                        `;
+                        dropdown.appendChild(div);
+                    });
                 }
 
                 function handleLiveSearch(event) {
-                    const query = event.target.value.toLowerCase().trim();
+                    const query = event.target.value.trim();
                     const dropdown = document.getElementById('search-results-dropdown');
-
                     if (!query) {
                         dropdown.style.display = 'none';
+                        dropdown.classList.remove('active');
+                        highlightedSearchIndex = -1;
                         return;
                     }
 
@@ -2661,58 +2743,11 @@ ANALYZE VERBOSE;</code></pre>
 
                     if (results.length > 0) {
                         renderSearchResults(results.slice(0, 40), query, results.length);
-                        dropdown.style.display = 'block';
                     } else {
                         dropdown.innerHTML = '<div class="search-result-item search-empty">No results found</div>';
-                        dropdown.style.display = 'block';
                     }
-                }
-
-                function renderSearchResults(results, query, totalCount) {
-                    const dropdown = document.getElementById('search-results-dropdown');
-                    dropdown.innerHTML = '';
-
-                    const summary = document.createElement('div');
-                    summary.className = 'search-result-item search-summary';
-                    summary.textContent = `${totalCount} result${totalCount === 1 ? '' : 's'}`;
-                    dropdown.appendChild(summary);
-
-                    results.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'search-result-item';
-                        div.onclick = () => {
-                            // Use sectionId if available for direct navigation
-                            if (item.sectionId) {
-                                showSection(item.sectionId);
-                                if (item.element && typeof item.element.scrollIntoView === 'function') {
-                                    setTimeout(() => item.element.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-                                }
-                            } else {
-                                // Fallback to chart category match
-                                showSection('dashboard-section');
-                            }
-
-                            // Update search box but close dropdown
-                            document.getElementById('search-input').value = item.title;
-                            dropdown.style.display = 'none';
-                        };
-
-                        // Highlight title logic
-                        // Escape special characters in query for regex
-                        const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        const regex = new RegExp(`(${safeQuery})`, 'gi');
-                        const highlightedTitle = item.title.replace(regex, '<span class="highlight">$1</span>');
-
-                        // Map simple colors to tailwind-like classes/styles if needed, or keep using tag-color classes
-                        div.innerHTML = `
-                            <div class="result-header">
-                                <span class="result-tag tag-${item.tagColor}">${item.tag}</span>
-                            </div>
-                            <div class="result-title">${highlightedTitle}</div>
-                            <div class="result-desc">${item.desc || item.category}</div>
-                        `;
-                        dropdown.appendChild(div);
-                    });
+                    dropdown.style.display = 'block';
+                    dropdown.classList.add('active');
                 }
 
                 function handleStartSearch() {
@@ -2721,26 +2756,52 @@ ANALYZE VERBOSE;</code></pre>
                     handleLiveSearch({ target: input });
                 }
 
+                function updateKeyboardHighlight(hits) {
+                    hits.forEach((item, idx) => {
+                        item.classList.toggle('keyboard-active', idx === highlightedSearchIndex);
+                    });
+                }
+
                 function handleSearchKeydown(event) {
+                    const dropdown = document.getElementById('search-results-dropdown');
+                    const hits = Array.from(dropdown.querySelectorAll('.search-hit'));
+                    if (!hits.length || dropdown.style.display !== 'block') return;
+
+                    if (event.key === 'ArrowDown') {
+                        event.preventDefault();
+                        highlightedSearchIndex = Math.min(highlightedSearchIndex + 1, hits.length - 1);
+                        updateKeyboardHighlight(hits);
+                        return;
+                    }
+                    if (event.key === 'ArrowUp') {
+                        event.preventDefault();
+                        highlightedSearchIndex = Math.max(highlightedSearchIndex - 1, 0);
+                        updateKeyboardHighlight(hits);
+                        return;
+                    }
                     if (event.key === 'Enter') {
-                        const dropdown = document.getElementById('search-results-dropdown');
-                        const firstResult = dropdown.querySelector('.search-result-item');
-                        if (firstResult && dropdown.style.display === 'block') {
-                            firstResult.click();
-                        }
+                        event.preventDefault();
+                        const selected = highlightedSearchIndex >= 0 ? hits[highlightedSearchIndex] : hits[0];
+                        if (selected) selected.click();
+                        return;
+                    }
+                    if (event.key === 'Escape') {
+                        dropdown.style.display = 'none';
+                        dropdown.classList.remove('active');
+                        highlightedSearchIndex = -1;
                     }
                 }
 
-                // Close dropdown when clicking outside
                 document.addEventListener('click', (e) => {
                     const dropdown = document.getElementById('search-results-dropdown');
                     const searchBox = document.querySelector('.search-box');
                     if (dropdown && searchBox && !searchBox.contains(e.target)) {
                         dropdown.style.display = 'none';
+                        dropdown.classList.remove('active');
+                        highlightedSearchIndex = -1;
                     }
                 });
 
-                // Refresh index after dynamic cards are generated by other scripts
                 setTimeout(refreshSearchIndex, 1200);
             </script>
 

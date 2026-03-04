@@ -3272,3 +3272,384 @@ body:not(.dark-mode) .content-section:not(#dashboard-section),
 body:not(.dark-mode) .content-section:not(#dashboard-section) * {
     color: #000000 !important;
 }
+
+/* IntelliDB branding + mode-specific pressed colors */
+:root {
+    --idb-deep: #123f53;
+    --idb-teal: #1fb8cf;
+    --idb-teal-dark: #138ea3;
+    --idb-gold: #f3a12b;
+}
+
+.logo-section.intellidb-brand {
+    min-width: 252px;
+    padding: 8px 14px 8px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.intellidb-brand-logo {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    display: block;
+}
+
+body:not(.dark-mode) .top-nav,
+body.dark-mode .top-nav {
+    background: var(--idb-deep) !important;
+}
+
+body:not(.dark-mode) .sidebar .nav-item.active,
+body:not(.dark-mode) .sidebar .nav-item:active {
+    background: linear-gradient(90deg, var(--idb-teal), var(--idb-teal-dark)) !important;
+    border-color: rgba(15, 124, 139, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active {
+    background: linear-gradient(90deg, #1da8bd, #0f6d7c) !important;
+    border-color: rgba(50, 210, 236, 0.35) !important;
+    color: #f2feff !important;
+    box-shadow: 0 6px 16px rgba(4, 33, 40, 0.45) !important;
+}
+
+body:not(.dark-mode) .main-nav .nav-link.active,
+body:not(.dark-mode) .main-nav .nav-link:hover,
+body.dark-mode .main-nav .nav-link.active,
+body.dark-mode .main-nav .nav-link:hover {
+    color: var(--idb-gold) !important;
+}
+
+body.dark-mode #dark-mode-toggle {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 999px;
+}
+
+body:not(.dark-mode) #dark-mode-toggle {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-radius: 999px;
+}
+
+.search-result-item.search-summary,
+.search-result-item.search-empty {
+    cursor: default;
+}
+
+.search-result-item.search-hit.keyboard-active {
+    background-color: rgba(31, 184, 207, 0.14);
+    outline: 1px solid rgba(31, 184, 207, 0.5);
+}
+
+/* Final light mode lock: same category color + black text everywhere */
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) .error-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .category-info-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-header,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-body,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .code-snippet-box pre,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .code-lang,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .code-block-dark {
+    background: #dcebff !important;
+    border-color: rgba(140, 182, 248, 0.45) !important;
+}
+
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) * {
+    color: #000000 !important;
+}
+
+/* Final dark mode lock: match provided screenshot palette */
+body.dark-mode {
+    background: #07101d !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .top-nav {
+    background: #123f53 !important;
+    border-bottom: 1px solid rgba(72, 104, 140, 0.45) !important;
+}
+
+body.dark-mode .sidebar {
+    background: linear-gradient(180deg, #17243a 0%, #122036 55%, #101a2d 100%) !important;
+    border-right: 1px solid rgba(62, 88, 122, 0.42) !important;
+}
+
+body.dark-mode .search-input {
+    background: #152238 !important;
+    border-color: rgba(86, 112, 146, 0.45) !important;
+    color: #dbe8ff !important;
+}
+
+body.dark-mode .search-input::placeholder,
+body.dark-mode .search-icon,
+body.dark-mode .sidebar .nav-item {
+    color: #dbe8ff !important;
+}
+
+body.dark-mode .sidebar .nav-item:hover {
+    background: rgba(96, 132, 176, 0.14) !important;
+    border-color: rgba(116, 152, 196, 0.28) !important;
+}
+
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active {
+    background: linear-gradient(90deg, #3aa7bf 0%, #1f8da9 100%) !important;
+    border-color: rgba(80, 186, 210, 0.55) !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 24px rgba(17, 78, 94, 0.42) !important;
+}
+
+body.dark-mode .main-content,
+body.dark-mode .container,
+body.dark-mode #dashboard-section,
+body.dark-mode .content-section {
+    background: #0a1426 !important;
+    border-color: rgba(61, 87, 120, 0.4) !important;
+}
+
+body.dark-mode .content-section,
+body.dark-mode .error-card,
+body.dark-mode .category-info-card,
+body.dark-mode .cat-card-header,
+body.dark-mode .cat-card-body,
+body.dark-mode .dashboard-card,
+body.dark-mode .stat-card,
+body.dark-mode .chart-details,
+body.dark-mode .chart-stat-box,
+body.dark-mode .enterprise-toolbar,
+body.dark-mode .enterprise-detail-panel,
+body.dark-mode .alerts-list,
+body.dark-mode .severity-list,
+body.dark-mode .server-primary,
+body.dark-mode .dashboard-table thead,
+body.dark-mode .dashboard-table tbody tr {
+    background: #1d2a3f !important;
+    border-color: rgba(83, 111, 148, 0.45) !important;
+}
+
+body.dark-mode .content-section *,
+body.dark-mode .dashboard-card *,
+body.dark-mode .stat-card *,
+body.dark-mode .error-card *,
+body.dark-mode .category-info-card * {
+    color: #ffffff !important;
+}
+
+body.dark-mode .main-nav .nav-link.active,
+body.dark-mode .main-nav .nav-link:hover {
+    color: #f3a12b !important;
+}
+
+/* Dark mode: same pressed/active color for all sidebar categories */
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: #183667 !important;
+    border-color: #183667 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .sidebar .nav-item.active .nav-icon,
+body.dark-mode .sidebar .nav-item:active .nav-icon,
+body.dark-mode .sidebar .nav-item:focus-visible .nav-icon,
+body.dark-mode .sidebar .nav-item.active span,
+body.dark-mode .sidebar .nav-item:active span,
+body.dark-mode .sidebar .nav-item:focus-visible span {
+    color: #ffffff !important;
+}
+
+/* Final dark mode category lock: same color for every category section */
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) .error-card,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
+body.dark-mode .content-section:not(#dashboard-section) .code-lang,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    background: #183667 !important;
+    border-color: rgba(126, 161, 216, 0.34) !important;
+}
+
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) * {
+    color: #ffffff !important;
+}
+
+/* Dark mode: remove gap between sidebar and category section */
+body.dark-mode .main-content {
+    padding-left: 0 !important;
+}
+
+body.dark-mode .content-section:not(#dashboard-section) {
+    margin-left: 0 !important;
+}
+
+/* Dark mode: remove top gap under header */
+body.dark-mode .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+body.dark-mode .main-content {
+    padding-top: 0 !important;
+}
+
+body.dark-mode .content-section {
+    margin-top: 0 !important;
+}
+
+/* Dark mode: remove right-side white strip (viewport/scrollbar area) */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body.dark-mode {
+    background: #07101d !important;
+}
+
+body.dark-mode::-webkit-scrollbar,
+html::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark-mode::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track {
+    background: #07101d !important;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb {
+    background: #2c4770 !important;
+    border-radius: 10px;
+}
+
+/* Final no-space lock for dark-mode category pages */
+body.dark-mode .main-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #183667 !important;
+}
+
+body.dark-mode .content-section:not(#dashboard-section) {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Category pages: force square corners (no curves) */
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) .content-header,
+body.dark-mode .content-section:not(#dashboard-section) .errors-container,
+body.dark-mode .content-section:not(#dashboard-section) .error-card,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    border-radius: 0 !important;
+}
+
+/* Final seam fix: no space between sidebar and category area in dark mode */
+body.dark-mode .container {
+    gap: 0 !important;
+}
+
+body.dark-mode .sidebar {
+    border-right: 0 !important;
+}
+
+body.dark-mode .main-content {
+    margin-left: -1px !important;
+}
+
+/* Dark mode dashboard: remove top-left gap and curved corner */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas {
+    margin: 0 !important;
+    padding-top: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card {
+    border-top-left-radius: 0 !important;
+}
+
+/* Remove inner sidebar scrollbar gutter (dark mode) */
+body.dark-mode .sidebar-nav {
+    overflow-y: visible !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    scrollbar-width: none;
+}
+
+body.dark-mode .sidebar-nav::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+/* Dark mode sidebar scrollbar: keep scroll, remove white gutter look */
+body.dark-mode .sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: #5a7398 #152746;
+}
+
+body.dark-mode .sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.dark-mode .sidebar::-webkit-scrollbar-track {
+    background: #152746 !important;
+}
+
+body.dark-mode .sidebar::-webkit-scrollbar-thumb {
+    background: #5a7398 !important;
+    border-radius: 8px;
+}
+
+/* Bottom edge flush: no gap between sidebar and content in dark mode */
+body.dark-mode .container,
+body.dark-mode .main-content,
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode .content-section:not(#dashboard-section) {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+body.dark-mode .main-content {
+    border-bottom-left-radius: 0 !important;
+}
+
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode .content-section:not(#dashboard-section) {
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Final dark-mode bottom corner fix */
+body.dark-mode .sidebar,
+body.dark-mode .main-content,
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode .content-section:not(#dashboard-section) {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+body.dark-mode .container,
+body.dark-mode .main-content {
+    background: #183667 !important;
+}
