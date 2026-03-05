@@ -3308,11 +3308,12 @@ body:not(.dark-mode) .sidebar .nav-item:active {
 }
 
 body.dark-mode .sidebar .nav-item.active,
-body.dark-mode .sidebar .nav-item:active {
-    background: linear-gradient(90deg, #1da8bd, #0f6d7c) !important;
-    border-color: rgba(50, 210, 236, 0.35) !important;
-    color: #f2feff !important;
-    box-shadow: 0 6px 16px rgba(4, 33, 40, 0.45) !important;
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: linear-gradient(90deg, #84c8ee 0%, #0d6f81 100%) !important;
+    border: 1px solid rgba(92, 196, 232, 0.58) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 34px rgba(70, 118, 255, 0.42) !important;
 }
 
 body:not(.dark-mode) .main-nav .nav-link.active,
@@ -3372,33 +3373,36 @@ body.dark-mode .top-nav {
 }
 
 body.dark-mode .sidebar {
-    background: linear-gradient(180deg, #17243a 0%, #122036 55%, #101a2d 100%) !important;
-    border-right: 1px solid rgba(62, 88, 122, 0.42) !important;
+    background: linear-gradient(180deg, #161f32 0%, #111a2d 58%, #0e1627 100%) !important;
+    border-right: 1px solid rgba(52, 79, 116, 0.55) !important;
 }
 
 body.dark-mode .search-input {
-    background: #152238 !important;
-    border-color: rgba(86, 112, 146, 0.45) !important;
-    color: #dbe8ff !important;
+    background: #172338 !important;
+    border-color: rgba(77, 104, 142, 0.55) !important;
+    color: #d7e6ff !important;
 }
 
 body.dark-mode .search-input::placeholder,
 body.dark-mode .search-icon,
 body.dark-mode .sidebar .nav-item {
-    color: #dbe8ff !important;
+    color: #eef4ff !important;
 }
 
 body.dark-mode .sidebar .nav-item:hover {
-    background: rgba(96, 132, 176, 0.14) !important;
-    border-color: rgba(116, 152, 196, 0.28) !important;
+    background: linear-gradient(90deg, #84c8ee 0%, #0d6f81 100%) !important;
+    border: 1px solid rgba(92, 196, 232, 0.58) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 34px rgba(70, 118, 255, 0.42) !important;
 }
 
 body.dark-mode .sidebar .nav-item.active,
-body.dark-mode .sidebar .nav-item:active {
-    background: linear-gradient(90deg, #3aa7bf 0%, #1f8da9 100%) !important;
-    border-color: rgba(80, 186, 210, 0.55) !important;
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: linear-gradient(90deg, #84c8ee 0%, #0d6f81 100%) !important;
+    border: 1px solid rgba(92, 196, 232, 0.58) !important;
     color: #ffffff !important;
-    box-shadow: 0 10px 24px rgba(17, 78, 94, 0.42) !important;
+    box-shadow: 0 0 34px rgba(70, 118, 255, 0.42) !important;
 }
 
 body.dark-mode .main-content,
@@ -3442,42 +3446,7 @@ body.dark-mode .main-nav .nav-link:hover {
     color: #f3a12b !important;
 }
 
-/* Dark mode: same pressed/active color for all sidebar categories */
-body.dark-mode .sidebar .nav-item.active,
-body.dark-mode .sidebar .nav-item:active,
-body.dark-mode .sidebar .nav-item:focus-visible {
-    background: #183667 !important;
-    border-color: #183667 !important;
-    color: #ffffff !important;
-    box-shadow: none !important;
-}
 
-body.dark-mode .sidebar .nav-item.active .nav-icon,
-body.dark-mode .sidebar .nav-item:active .nav-icon,
-body.dark-mode .sidebar .nav-item:focus-visible .nav-icon,
-body.dark-mode .sidebar .nav-item.active span,
-body.dark-mode .sidebar .nav-item:active span,
-body.dark-mode .sidebar .nav-item:focus-visible span {
-    color: #ffffff !important;
-}
-
-/* Final dark mode category lock: same color for every category section */
-body.dark-mode .content-section:not(#dashboard-section),
-body.dark-mode .content-section:not(#dashboard-section) .error-card,
-body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
-body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
-body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
-body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
-body.dark-mode .content-section:not(#dashboard-section) .code-lang,
-body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
-    background: #183667 !important;
-    border-color: rgba(126, 161, 216, 0.34) !important;
-}
-
-body.dark-mode .content-section:not(#dashboard-section),
-body.dark-mode .content-section:not(#dashboard-section) * {
-    color: #ffffff !important;
-}
 
 /* Dark mode: remove gap between sidebar and category section */
 body.dark-mode .main-content {
@@ -3534,7 +3503,7 @@ html::-webkit-scrollbar-thumb {
 body.dark-mode .main-content {
     padding: 0 !important;
     margin: 0 !important;
-    background: #183667 !important;
+    background: #0a1426 !important;
 }
 
 body.dark-mode .content-section:not(#dashboard-section) {
@@ -3651,5 +3620,544 @@ body.dark-mode .content-section:not(#dashboard-section) {
 
 body.dark-mode .container,
 body.dark-mode .main-content {
-    background: #183667 !important;
+    background: #0a1426 !important;
+}
+
+
+
+
+
+
+
+
+/* Final forced dark-mode sidebar palette (image match) */
+body.dark-mode .sidebar {
+    background: linear-gradient(180deg, #1a2338 0%, #121b2d 60%, #10182a 100%) !important;
+    border-right: 1px solid #2a3a57 !important;
+}
+
+body.dark-mode .search-input {
+    background: #16243a !important;
+    border: 1px solid #334a70 !important;
+    color: #dce9ff !important;
+}
+
+body.dark-mode .search-input::placeholder,
+body.dark-mode .search-icon,
+body.dark-mode .sidebar .nav-item {
+    color: #eef4ff !important;
+}
+
+body.dark-mode .sidebar .nav-item:hover {
+    background: linear-gradient(90deg, #84c8ee 0%, #0d6f81 100%) !important;
+    border: 1px solid rgba(92, 196, 232, 0.58) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 34px rgba(70, 118, 255, 0.42) !important;
+}
+
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: linear-gradient(90deg, #84c8ee 0%, #0d6f81 100%) !important;
+    border: 1px solid rgba(92, 196, 232, 0.58) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 34px rgba(70, 118, 255, 0.42) !important;
+}
+
+
+
+
+
+
+
+
+
+/* Exact dark-mode sidebar style from reference */
+body.dark-mode .sidebar {
+    background: linear-gradient(180deg, #182339 0%, #121b2d 62%, #0f1829 100%) !important;
+    border-right: 1px solid rgba(60, 83, 122, 0.42) !important;
+}
+
+body.dark-mode .search-input {
+    background: #152037 !important;
+    border: 1px solid rgba(76, 102, 146, 0.42) !important;
+    color: #dfeaff !important;
+    border-radius: 12px !important;
+}
+
+body.dark-mode .search-input::placeholder,
+body.dark-mode .search-icon {
+    color: #9fb0cf !important;
+}
+
+body.dark-mode .sidebar .nav-item {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 14px !important;
+    color: #f2f6ff !important;
+}
+
+body.dark-mode .sidebar .nav-item .nav-icon,
+body.dark-mode .sidebar .nav-item span {
+    color: #f2f6ff !important;
+}
+
+body.dark-mode .sidebar .nav-item:hover,
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: linear-gradient(90deg, #88ccef 0%, #0f6f83 100%) !important;
+    border: 1px solid rgba(111, 206, 238, 0.45) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 30px rgba(67, 105, 255, 0.36) !important;
+}
+
+body.dark-mode .sidebar .nav-item:hover .nav-icon,
+body.dark-mode .sidebar .nav-item.active .nav-icon,
+body.dark-mode .sidebar .nav-item:active .nav-icon,
+body.dark-mode .sidebar .nav-item:focus-visible .nav-icon,
+body.dark-mode .sidebar .nav-item:hover span,
+body.dark-mode .sidebar .nav-item.active span,
+body.dark-mode .sidebar .nav-item:active span,
+body.dark-mode .sidebar .nav-item:focus-visible span {
+    color: #ffffff !important;
+}
+
+/* Final dark-mode dashboard color remap (match reference blue tone) */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid {
+    background: #132d5f !important;
+    border-color: rgba(74, 122, 191, 0.55) !important;
+}
+
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr {
+    background: #17386f !important;
+    border-color: rgba(88, 136, 204, 0.58) !important;
+}
+
+/* Exact dark-mode dashboard palette (reference match) */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode .main-content {
+    background: #0a1220 !important;
+    border-color: rgba(49, 78, 118, 0.5) !important;
+}
+
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr {
+    background: linear-gradient(145deg, #343c4d 0%, #1d2538 72%, #152036 100%) !important;
+    border-color: rgba(61, 104, 157, 0.55) !important;
+}
+
+/* Uniform inside-category background color (dark mode) */
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) .content-header,
+body.dark-mode .content-section:not(#dashboard-section) .errors-container,
+body.dark-mode .content-section:not(#dashboard-section) .error-card,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    background: #061a3d !important;
+}
+
+/* Uniform card color (reference match) */
+body.dark-mode .error-card,
+body.dark-mode .dashboard-card,
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode .quick-access-card,
+body.dark-mode .category-info-card,
+body.dark-mode .cat-card-header,
+body.dark-mode .cat-card-body,
+body.dark-mode .enterprise-toolbar,
+body.dark-mode .enterprise-detail-panel,
+body.dark-mode .alerts-list,
+body.dark-mode .severity-list,
+body.dark-mode .server-primary,
+body.dark-mode .dashboard-table thead,
+body.dark-mode .dashboard-table tbody tr {
+    background: #1a2436 !important;
+}
+
+/* Match all category backgrounds to dashboard background (dark mode) */
+body.dark-mode .content-section:not(#dashboard-section),
+body.dark-mode .content-section:not(#dashboard-section) .content-header,
+body.dark-mode .content-section:not(#dashboard-section) .errors-container,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    background: #0a1220 !important;
+}
+
+
+
+/* Uniform dark-grey card color for all categories (dark mode) */
+body.dark-mode .content-section .error-card,
+body.dark-mode .dashboard-card,
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode .quick-access-card,
+body.dark-mode .category-info-card,
+body.dark-mode .cat-card-header,
+body.dark-mode .cat-card-body,
+body.dark-mode .enterprise-toolbar,
+body.dark-mode .enterprise-detail-panel,
+body.dark-mode .alerts-list,
+body.dark-mode .severity-list,
+body.dark-mode .server-primary,
+body.dark-mode .dashboard-table thead,
+body.dark-mode .dashboard-table tbody tr {
+    background: linear-gradient(145deg, #3d4452 0%, #2f3748 55%, #1d273b 100%) !important;
+    border-color: rgba(79, 118, 170, 0.5) !important;
+}
+
+/* Final global card tone: use dark-grey gradient for every card in dark mode */
+body.dark-mode .content-section .error-card,
+body.dark-mode .content-section .error-card[data-kb-overview="auto"],
+body.dark-mode .content-section .dashboard-card,
+body.dark-mode .content-section .stat-card,
+body.dark-mode .content-section .chart-card,
+body.dark-mode .content-section .quick-access-card,
+body.dark-mode .content-section .category-info-card,
+body.dark-mode .content-section .cat-card-header,
+body.dark-mode .content-section .cat-card-body,
+body.dark-mode .content-section .enterprise-toolbar,
+body.dark-mode .content-section .enterprise-detail-panel,
+body.dark-mode .content-section .alerts-list,
+body.dark-mode .content-section .severity-list,
+body.dark-mode .content-section .server-primary,
+body.dark-mode .content-section .dashboard-table thead,
+body.dark-mode .content-section .dashboard-table tbody tr {
+    background: linear-gradient(145deg, #3d4452 0%, #2f3748 55%, #1d273b 100%) !important;
+    border-color: rgba(79, 118, 170, 0.5) !important;
+}
+
+/* Final exact card color (dark mode, all cards) */
+body.dark-mode .error-card,
+body.dark-mode .dashboard-card,
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode .quick-access-card,
+body.dark-mode .category-info-card,
+body.dark-mode .cat-card-header,
+body.dark-mode .cat-card-body,
+body.dark-mode .enterprise-toolbar,
+body.dark-mode .enterprise-detail-panel,
+body.dark-mode .alerts-list,
+body.dark-mode .severity-list,
+body.dark-mode .server-primary,
+body.dark-mode .dashboard-table thead,
+body.dark-mode .dashboard-table tbody tr {
+    background: linear-gradient(145deg, #3d4452 0%, #2c3448 52%, #1d2840 100%) !important;
+    border-color: rgba(73, 114, 171, 0.52) !important;
+}
+
+
+
+
+
+
+
+/* Final fixed color for sidebar + inside-category cards */
+body.dark-mode .sidebar,
+body.dark-mode .sidebar .sidebar-nav,
+body.dark-mode .sidebar .nav-item,
+body.dark-mode .sidebar .nav-item:hover,
+body.dark-mode .sidebar .nav-item.active,
+body.dark-mode .sidebar .nav-item:active,
+body.dark-mode .sidebar .nav-item:focus-visible {
+    background: #181F2B !important;
+}
+
+body.dark-mode .content-section:not(#dashboard-section) .error-card,
+body.dark-mode .content-section:not(#dashboard-section) .category-info-card,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-header,
+body.dark-mode .content-section:not(#dashboard-section) .cat-card-body,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box,
+body.dark-mode .content-section:not(#dashboard-section) .code-snippet-box pre,
+body.dark-mode .content-section:not(#dashboard-section) .code-block-dark {
+    background: #181F2B !important;
+}
+
+/* Final dark-mode dashboard inside color: #181F2B */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-ux-strip > *,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr {
+    background: #181F2B !important;
+}
+
+/* HARD FORCE: pure #181F2B inside dashboard (dark mode) */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .command-center-card,
+body.dark-mode #dashboard-section .timeline-card,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .ux-chip,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .chart-details,
+body.dark-mode #dashboard-section .chart-stat-box {
+    background: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+body.dark-mode #dashboard-section .stat-card::after,
+body.dark-mode #dashboard-section .command-center-card::before,
+body.dark-mode #dashboard-section .timeline-card::before {
+    content: none !important;
+    background: none !important;
+}
+
+
+
+
+
+/* FINAL DASHBOARD INSIDE COLOR LOCK: #181F2B */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-ux-strip > *,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .dashboard-stats > *,
+body.dark-mode #dashboard-section .dashboard-grid > *,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .chart-details,
+body.dark-mode #dashboard-section .chart-stat-box,
+body.dark-mode #dashboard-section .command-center-card,
+body.dark-mode #dashboard-section .timeline-card,
+body.dark-mode #dashboard-section .workspace-context-card {
+    background: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+/* Category hover color lock */
+body.dark-mode .sidebar .nav-item:hover,
+body.dark-mode .sidebar .sidebar-nav .nav-item:hover {
+    background: #68A8C9 !important;
+    border-color: #68A8C9 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(104, 168, 201, 0.45) !important;
+}
+
+/* Exact inside-dashboard card color */
+body.dark-mode #dashboard-section .error-card,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .workspace-context-card {
+    background: #181F2B !important;
+    background-image: none !important;
+}
+
+
+
+/* Remove blue dashboard tone (dark mode) */
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-ux-strip > *,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .workspace-context-card,
+body.dark-mode #dashboard-section .env-btn,
+body.dark-mode #dashboard-section .view-btn,
+body.dark-mode #dashboard-section .action-btn,
+body.dark-mode #dashboard-section .ux-chip,
+body.dark-mode #dashboard-section .search-kbd {
+    background: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+
+
+/* Match dashboard card color to Introduction category inside cards */
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .workspace-context-card,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .chart-details,
+body.dark-mode #dashboard-section .chart-stat-box,
+body.dark-mode #dashboard-section .command-center-card,
+body.dark-mode #dashboard-section .timeline-card {
+    background: #181F2B !important;
+    background-image: none !important;
+}
+
+/* Final dashboard panel background (replace blue with dark tone) */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .content-header,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode #dashboard-section .workspace-context-card,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .stat-card,
+body.dark-mode #dashboard-section .chart-card,
+body.dark-mode #dashboard-section .quick-access-card,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+/* ABSOLUTE FINAL dashboard surface lock */
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-ux-strip,
+body.dark-mode #dashboard-section .enterprise-ux-strip > .ux-chip,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .dashboard-stats,
+body.dark-mode #dashboard-section .dashboard-stats > .stat-card,
+body.dark-mode #dashboard-section .dashboard-grid,
+body.dark-mode #dashboard-section .dashboard-grid > .dashboard-card,
+body.dark-mode #dashboard-section .dashboard-card,
+body.dark-mode #dashboard-section .chart-details,
+body.dark-mode #dashboard-section .chart-stat-box,
+body.dark-mode #dashboard-section .quick-access-list,
+body.dark-mode #dashboard-section .quick-access-item,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .table-wrap,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .command-center-card,
+body.dark-mode #dashboard-section .timeline-card,
+body.dark-mode #dashboard-section .command-actions,
+body.dark-mode #dashboard-section .command-kpis,
+body.dark-mode #dashboard-section .kpi-chip,
+body.dark-mode #dashboard-section .timeline-list,
+body.dark-mode #dashboard-section .timeline-item {
+    background: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+/* ABSOLUTE FINAL dashboard recolor (requested tone) */
+body.dark-mode #dashboard-section,
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section .enterprise-toolbar,
+body.dark-mode #dashboard-section .enterprise-ux-strip > .ux-chip,
+body.dark-mode #dashboard-section .enterprise-detail-panel,
+body.dark-mode #dashboard-section .dashboard-stats > .stat-card,
+body.dark-mode #dashboard-section .dashboard-grid > .dashboard-card,
+body.dark-mode #dashboard-section .dashboard-extended-grid > .dashboard-card,
+body.dark-mode #dashboard-section .workspace-context-card,
+body.dark-mode #dashboard-section .severity-list,
+body.dark-mode #dashboard-section .server-primary,
+body.dark-mode #dashboard-section .table-wrap,
+body.dark-mode #dashboard-section .dashboard-table,
+body.dark-mode #dashboard-section .dashboard-table thead,
+body.dark-mode #dashboard-section .dashboard-table tbody tr,
+body.dark-mode #dashboard-section .alerts-list,
+body.dark-mode #dashboard-section .alert-row,
+body.dark-mode #dashboard-section .command-center-card,
+body.dark-mode #dashboard-section .timeline-card,
+body.dark-mode #dashboard-section .command-kpis,
+body.dark-mode #dashboard-section .kpi-chip,
+body.dark-mode #dashboard-section .timeline-list,
+body.dark-mode #dashboard-section .timeline-item,
+body.dark-mode #dashboard-section .chart-details,
+body.dark-mode #dashboard-section .chart-stat-box,
+body.dark-mode #dashboard-section .quick-access-list,
+body.dark-mode #dashboard-section .quick-access-item {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode #dashboard-section .stat-card::after,
+body.dark-mode #dashboard-section .command-center-card::before,
+body.dark-mode #dashboard-section .timeline-card::before {
+    content: none !important;
+    background: none !important;
 }
