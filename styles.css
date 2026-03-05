@@ -4301,3 +4301,28 @@ body.dark-mode .content-section:not(#dashboard-section) .back-to-dashboard-btn:f
     color: #ffffff !important;
     box-shadow: none !important;
 }
+
+/* Sidebar header text in empty space above search */
+.sidebar-kb-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px 8px 16px;
+}
+
+.sidebar-kb-icon {
+    font-size: 1.85rem;
+    line-height: 1;
+}
+
+.sidebar-kb-text {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #58b3ff;
+    white-space: nowrap;
+}
+
+body.dark-mode .sidebar-kb-text {
+    color: #58b3ff !important;
+}
