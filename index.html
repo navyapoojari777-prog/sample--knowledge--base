@@ -12,9 +12,6 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="header-content">
-            <div class="logo-section intellidb-brand">
-                <img class="intellidb-brand-logo" src="intellidb-logo.svg" alt="IntelliDB Enterprise logo">
-            </div>
             <nav class="main-nav" aria-label="Primary"></nav>
             <button id="dark-mode-toggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button>
 
@@ -7214,6 +7211,66 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
             </div>
         </div>
     </div>
+    <style id="final-dashboard-color-lock">
+/* Hard final lock: visible immediately, overrides everything */
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input {
+    background: #1a2540 !important;
+    border-color: #5f7fb5 !important;
+    color: #d8e5ff !important;
+}
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input::placeholder {
+    color: #9fb3d8 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-list,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-row {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-name,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.critical,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.high,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.medium,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.low {
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn.primary {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .chart-instruction-box,
+body.dark-mode #dashboard-section.enterprise-saas .chart-center-text {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .donut-chart::before {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .chart-instruction-box *,
+body.dark-mode #dashboard-section.enterprise-saas .chart-center-text * {
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip *,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-label,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-value {
+    color: #ffffff !important;
+}
+</style>
     <script src="script.js"></script>
 </body>
 

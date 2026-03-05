@@ -4161,3 +4161,143 @@ body.dark-mode #dashboard-section .timeline-card::before {
     content: none !important;
     background: none !important;
 }
+
+/* NUCLEAR OVERRIDE: dashboard enterprise-saas surfaces */
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-toolbar,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-ux-strip > *,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-detail-panel,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-stats > .stat-card,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-grid > .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-extended-grid > .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .workspace-context-card,
+body.dark-mode #dashboard-section.enterprise-saas .severity-list,
+body.dark-mode #dashboard-section.enterprise-saas .server-primary,
+body.dark-mode #dashboard-section.enterprise-saas .table-wrap,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table thead,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table tbody tr,
+body.dark-mode #dashboard-section.enterprise-saas .alerts-list,
+body.dark-mode #dashboard-section.enterprise-saas .alert-row,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-card,
+body.dark-mode #dashboard-section.enterprise-saas .command-kpis,
+body.dark-mode #dashboard-section.enterprise-saas .kpi-chip,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-list,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-item,
+body.dark-mode #dashboard-section.enterprise-saas .chart-details,
+body.dark-mode #dashboard-section.enterprise-saas .chart-stat-box,
+body.dark-mode #dashboard-section.enterprise-saas .quick-access-list,
+body.dark-mode #dashboard-section.enterprise-saas .quick-access-item {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    background-color: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card::after,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card::after,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
+    content: none !important;
+    background: none !important;
+}
+
+/* FINAL visual match: search bar, severity panel, command buttons */
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-toolbar,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-detail-panel,
+body.dark-mode #dashboard-section.enterprise-saas .chart-card,
+body.dark-mode #dashboard-section.enterprise-saas .quick-access-card,
+body.dark-mode #dashboard-section.enterprise-saas .alerts-card,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-card,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    background-image: none !important;
+}
+
+/* Search bar */
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search {
+    background: transparent !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input {
+    background: #1a2540 !important;
+    border: 1px solid #5f7fb5 !important;
+    color: #d8e5ff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input::placeholder {
+    color: #9fb3d8 !important;
+}
+
+/* Severity list light card */
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-list {
+    background: #eef1f5 !important;
+    border: 1px solid #d8dde6 !important;
+    border-radius: 12px !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-row {
+    background: #eef1f5 !important;
+    border-bottom: 1px solid #d6dce6 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-row:last-child {
+    border-bottom: 0 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-name,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.critical,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.high,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.medium,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.low {
+    color: #000000 !important;
+}
+
+/* Command buttons */
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn {
+    background: #f4f6fa !important;
+    border: 1px solid #d7dee8 !important;
+    color: #000000 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn.primary {
+    background: #2d8df0 !important;
+    border-color: #2d8df0 !important;
+    color: #000000 !important;
+}
+
+/* Category header left spacing to match dashboard */
+body.dark-mode .content-section:not(#dashboard-section) .content-header {
+    padding-left: 18px !important;
+}
+
+/* Sidebar title above search */
+.sidebar-kb-title {
+    padding: 14px 16px 8px 16px;
+    font-size: 2rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #58b3ff;
+}
+
+body.dark-mode .sidebar-kb-title {
+    color: #58b3ff !important;
+}
+
+/* Dark mode category back button: remove white fill */
+body.dark-mode .content-section:not(#dashboard-section) .back-to-dashboard-btn,
+body.dark-mode .content-section:not(#dashboard-section) .back-to-dashboard-btn:hover,
+body.dark-mode .content-section:not(#dashboard-section) .back-to-dashboard-btn:focus-visible {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border: 1px solid rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}

@@ -1497,8 +1497,133 @@ SELECT now();
 
     // Dark mode toggle with persistence
     const darkToggle = document.getElementById('dark-mode-toggle');
+    function applyDashboardRuntimeThemeLock(enabled) {
+        const styleId = 'runtime-dashboard-theme-lock';
+        let styleEl = document.getElementById(styleId);
+
+        if (!enabled) {
+            if (styleEl) styleEl.remove();
+            return;
+        }
+
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = styleId;
+            document.head.appendChild(styleEl);
+        }
+
+        styleEl.textContent = `
+body.dark-mode #dashboard-section.enterprise-saas,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-toolbar,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-ux-strip > *,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-detail-panel,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-stats > .stat-card,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-grid > .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-extended-grid > .dashboard-card,
+body.dark-mode #dashboard-section.enterprise-saas .workspace-context-card,
+body.dark-mode #dashboard-section.enterprise-saas .severity-list,
+body.dark-mode #dashboard-section.enterprise-saas .server-primary,
+body.dark-mode #dashboard-section.enterprise-saas .table-wrap,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table thead,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-table tbody tr,
+body.dark-mode #dashboard-section.enterprise-saas .alerts-list,
+body.dark-mode #dashboard-section.enterprise-saas .alert-row,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-card,
+body.dark-mode #dashboard-section.enterprise-saas .command-kpis,
+body.dark-mode #dashboard-section.enterprise-saas .kpi-chip,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-list,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-item,
+body.dark-mode #dashboard-section.enterprise-saas .chart-details,
+body.dark-mode #dashboard-section.enterprise-saas .chart-stat-box,
+body.dark-mode #dashboard-section.enterprise-saas .quick-access-list,
+body.dark-mode #dashboard-section.enterprise-saas .quick-access-item {
+    background: #181F2B !important;
+    background-image: none !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    box-shadow: none !important;
+}
+
+/* Search bar style from reference */
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search,
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input {
+    background: #1a2540 !important;
+    color: #d8e5ff !important;
+    border-color: #5f7fb5 !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .enterprise-search input::placeholder {
+    color: #9fb3d8 !important;
+}
+
+/* Severity card: light rows from reference */
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-list,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-row {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-name,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.critical,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.high,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.medium,
+body.dark-mode #dashboard-section.enterprise-saas .severity-breakdown-card .severity-value.low {
+    color: #ffffff !important;
+}
+
+/* Command buttons from reference */
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .command-btn.primary {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .chart-instruction-box,
+body.dark-mode #dashboard-section.enterprise-saas .chart-center-text {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+    border-color: rgba(72, 98, 138, 0.45) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .donut-chart::before {
+    background: linear-gradient(90deg, #181F2B 0%, #1B2535 100%) !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .chart-instruction-box *,
+body.dark-mode #dashboard-section.enterprise-saas .chart-center-text * {
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip *,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-label,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-value {
+    color: #ffffff !important;
+}
+
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .dashboard-card::after,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .stat-card::after,
+body.dark-mode #dashboard-section.enterprise-saas .command-center-card::before,
+body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
+    content: none !important;
+    background: none !important;
+}
+`;
+    }
+
     function applyDarkMode(enabled) {
         document.body.classList.toggle('dark-mode', enabled);
+        applyDashboardRuntimeThemeLock(enabled);
         if (darkToggle) {
             darkToggle.textContent = enabled ? '☀️' : '🌙';
             darkToggle.title = enabled ? 'Switch to light mode' : 'Switch to dark mode';
