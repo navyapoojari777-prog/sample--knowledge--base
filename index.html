@@ -12,6 +12,10 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="header-content">
+            <div class="top-left-header-logo" aria-label="IntelliDB logo">
+                <img src="C:\Users\HP\Pictures\Screenshots\intelldb logo.png" alt="IntelliDB Enterprise logo">
+                <span class="top-left-header-title">Knowledge Base</span>
+            </div>
             <nav class="main-nav" aria-label="Primary"></nav>
             <button id="dark-mode-toggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button>
 
@@ -7271,6 +7275,51 @@ body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip
     color: #ffffff !important;
 }
 </style>
+    <style id="final-header-logo-lock">
+/* Final header/logo lock */
+.top-nav,
+body.dark-mode .top-nav {
+    background: #123f53 !important;
+    border-bottom: 1px solid rgba(61, 103, 138, 0.45) !important;
+}
+
+.top-nav .header-content {
+    min-height: 96px !important;
+    padding: 0 10px !important;
+    gap: 10px !important;
+    justify-content: flex-start !important;
+}
+
+.top-left-header-logo {
+    width: auto !important;
+    min-width: 280px !important;
+    height: 92px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    margin-left: -6px !important;
+    background: transparent !important;
+    border: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+.top-left-header-logo img {
+    width: 86px !important;
+    height: 86px !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    display: block !important;
+}
+
+.top-left-header-title {
+    font-size: 1.05rem !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    color: #58b3ff !important;
+    white-space: nowrap !important;
+}
+    </style>
     <script src="script.js"></script>
 </body>
 
