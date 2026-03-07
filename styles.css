@@ -4360,3 +4360,144 @@ body.dark-mode .top-nav {
 body.dark-mode .top-left-header-title {
     color: #58b3ff !important;
 }
+
+/* Light mode requirement: soft page background + white cards */
+body:not(.dark-mode),
+body:not(.dark-mode) .container,
+body:not(.dark-mode) .main-content,
+body:not(.dark-mode) .content-section,
+body:not(.dark-mode) #dashboard-section {
+    background-color: #eef3f8 !important;
+    color: #000000 !important;
+}
+
+body:not(.dark-mode) .dashboard-card,
+body:not(.dark-mode) .stat-card,
+body:not(.dark-mode) .error-card,
+body:not(.dark-mode) .category-info-card,
+body:not(.dark-mode) .cat-card-header,
+body:not(.dark-mode) .cat-card-body,
+body:not(.dark-mode) .enterprise-toolbar,
+body:not(.dark-mode) .enterprise-detail-panel,
+body:not(.dark-mode) .workspace-context-card,
+body:not(.dark-mode) .quick-access-card,
+body:not(.dark-mode) .chart-card,
+body:not(.dark-mode) .alerts-list,
+body:not(.dark-mode) .severity-list,
+body:not(.dark-mode) .server-primary,
+body:not(.dark-mode) .command-center-card,
+body:not(.dark-mode) .timeline-card,
+body:not(.dark-mode) .table-wrap,
+body:not(.dark-mode) .dashboard-table thead,
+body:not(.dark-mode) .dashboard-table tbody tr {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Light mode: remove purple strip in sidebar area */
+body:not(.dark-mode) .sidebar,
+body:not(.dark-mode) .sidebar-nav {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+body:not(.dark-mode) .sidebar::-webkit-scrollbar-track {
+    background: #ffffff !important;
+}
+
+/* Light mode: sidebar text in black */
+body:not(.dark-mode) .sidebar,
+body:not(.dark-mode) .sidebar .nav-item,
+body:not(.dark-mode) .sidebar .nav-item span,
+body:not(.dark-mode) .sidebar .nav-item .nav-icon,
+body:not(.dark-mode) .sidebar-kb-title {
+    color: #000000 !important;
+}
+
+body:not(.dark-mode) .sidebar .nav-item span,
+body:not(.dark-mode) .sidebar .nav-item:hover span,
+body:not(.dark-mode) .sidebar .nav-item.active span,
+body:not(.dark-mode) .sidebar .nav-item:focus-visible span {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+
+/* Light mode: remove space between sidebar and content */
+body:not(.dark-mode) .container {
+    gap: 0 !important;
+}
+
+body:not(.dark-mode) .sidebar {
+    border-right: 0 !important;
+}
+
+body:not(.dark-mode) .main-content {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+body:not(.dark-mode) .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+body:not(.dark-mode) .content-section,
+body:not(.dark-mode) #dashboard-section,
+body:not(.dark-mode) #dashboard-section.enterprise-saas {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+/* Light mode: set all category pages to requested gray background */
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) .content-header,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .errors-container {
+    background: #e3e4e8 !important;
+    background-color: #e3e4e8 !important;
+}
+
+/* Final light-mode lock: category page background */
+body:not(.dark-mode) .content-section:not(#dashboard-section),
+body:not(.dark-mode) .content-section:not(#dashboard-section) .content-header,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .errors-container,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .errors-container::before,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .errors-container::after {
+    background: #e8e9ed !important;
+    background-color: #e8e9ed !important;
+}
+
+/* Strong lock for all category section ids in light mode */
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section),
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .content-header,
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .errors-container {
+    background: #e8e9ed !important;
+    background-color: #e8e9ed !important;
+}
+
+/* Light mode: category cards should be white */
+body:not(.dark-mode) .content-section:not(#dashboard-section) .category-info-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .error-card,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-header,
+body:not(.dark-mode) .content-section:not(#dashboard-section) .cat-card-body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Light mode: dashboard area background to requested gray */
+body:not(.dark-mode) #dashboard-section,
+body:not(.dark-mode) #dashboard-section.enterprise-saas,
+body:not(.dark-mode) #dashboard-section .content-header,
+body:not(.dark-mode) #dashboard-section .dashboard-stats,
+body:not(.dark-mode) #dashboard-section .dashboard-grid {
+    background: #f0f2f6 !important;
+    background-color: #f0f2f6 !important;
+}

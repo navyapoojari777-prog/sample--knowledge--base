@@ -7274,6 +7274,14 @@ body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip
 body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-value {
     color: #ffffff !important;
 }
+
+/* Final light-mode lock: category section background */
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section),
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .content-header,
+body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .errors-container {
+    background: #e8e9ed !important;
+    background-color: #e8e9ed !important;
+}
 </style>
     <style id="final-header-logo-lock">
 /* Final header/logo lock */
