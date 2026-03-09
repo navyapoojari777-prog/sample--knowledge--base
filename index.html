@@ -2273,6 +2273,8 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
                     const formattedTotalIssues = totalIssues.toLocaleString('en-US');
                     const formattedPieCenterTotal = (11708).toLocaleString('en-US');
                     const chartContainer = document.querySelector('.donut-chart');
+                    const centerNumberEl = chartContainer ? chartContainer.querySelector('.chart-center-text .total-number') : null;
+                    const centerLabelEl = chartContainer ? chartContainer.querySelector('.chart-center-text .total-label') : null;
 
                     const dashboardTotalIssuesEl = document.getElementById('dashboard-total-issues');
                     const chartTotalIssuesEl = document.getElementById('chart-total-issues');
@@ -2281,6 +2283,21 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
                     if (dashboardTotalIssuesEl) dashboardTotalIssuesEl.textContent = formattedPieCenterTotal;
                     if (chartTotalIssuesEl) chartTotalIssuesEl.textContent = formattedTotalIssues;
                     if (documentedIssuesEl) documentedIssuesEl.textContent = formattedTotalIssues;
+
+                    function setChartCenter(numberText, labelText, colorText) {
+                        if (centerNumberEl) {
+                            centerNumberEl.textContent = numberText;
+                            centerNumberEl.style.color = colorText || '';
+                        }
+                        if (centerLabelEl) {
+                            centerLabelEl.textContent = labelText;
+                            centerLabelEl.style.color = '';
+                        }
+                    }
+
+                    function resetChartCenter() {
+                        setChartCenter(formattedPieCenterTotal, 'TOTAL ISSUES', '');
+                    }
 
                     function upsertCategoryOverview(sectionId, totalCount, criticalCount) {
                         const section = document.getElementById(sectionId);
@@ -2395,6 +2412,9 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
                         path.setAttribute("stroke", item.color);
                         path.setAttribute("stroke-width", strokeWidth);
                         path.setAttribute("class", "chart-segment");
+                        path.dataset.label = item.label;
+                        path.dataset.count = String(item.count);
+                        path.dataset.color = item.color;
 
                         // Interaction
                         path.addEventListener('mousemove', (e) => {
@@ -2402,6 +2422,7 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
                             tooltip.style.opacity = '1';
                             tooltip.style.left = (e.pageX + 15) + 'px';
                             tooltip.style.top = (e.pageY + 15) + 'px';
+                            setChartCenter(item.count.toLocaleString('en-US'), item.label.toUpperCase(), item.color);
                             tooltip.innerHTML = `
                                 <div class="tooltip-header">
                                     <span class="tooltip-header-icon">${item.icon}</span>
@@ -2422,6 +2443,7 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
 
                         path.addEventListener('mouseleave', () => {
                             tooltip.style.opacity = '0';
+                            resetChartCenter();
                         });
 
                         // Click Handler
@@ -2472,6 +2494,23 @@ host    all             all             192.168.1.10/32         scram-sha-256</c
                     });
 
                     chartContainer.insertBefore(svg, chartContainer.firstChild);
+
+                    if (chartContainer) {
+                        chartContainer.addEventListener('mousemove', (event) => {
+                            const segment = event.target && event.target.closest ? event.target.closest('.chart-segment') : null;
+                            if (!segment) return;
+                            const label = (segment.dataset.label || '').toUpperCase();
+                            const count = Number(segment.dataset.count || 0);
+                            const color = segment.dataset.color || '';
+                            if (label && count) {
+                                setChartCenter(count.toLocaleString('en-US'), label, color);
+                            }
+                        });
+
+                        chartContainer.addEventListener('mouseleave', () => {
+                            resetChartCenter();
+                        });
+                    }
 
                     // Re-init search index
                     searchIndex = buildSearchIndex();
