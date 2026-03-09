@@ -7,13 +7,12 @@
     <title>IntelliDB Knowledge Base</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="header-content">
             <div class="top-left-header-logo" aria-label="IntelliDB logo">
-                <img src="C:\Users\HP\Pictures\Screenshots\intelldb logo.png" alt="IntelliDB Enterprise logo">
+                <img src="C:\Users\HP\Pictures\Screenshots\imageslogo.png.png" alt="IntelliDB Enterprise logo">
                 <span class="top-left-header-title">Knowledge Base</span>
             </div>
             <nav class="main-nav" aria-label="Primary"></nav>
@@ -7194,7 +7193,7 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
     </div>
 
     <div id="assistant-container">
-        <button id="assistant-toggle" aria-label="Open assistant">🤖</button>
+        <button id="assistant-toggle" aria-label="Open assistant"><span class="assistant-toggle-icon" aria-hidden="true">🤖</span></button>
         <div id="assistant-window" class="hidden">
             <div id="assistant-header">
                 <div class="assistant-title-wrap">
@@ -7205,6 +7204,7 @@ WHEN NOT MATCHED THEN INSERT VALUES (s.id, s.val);</code></pre>
                     </div>
                 </div>
                 <div class="assistant-header-actions">
+                    <button id="assistant-clear" class="assistant-head-btn" aria-label="Clear chat">↺</button>
                     <button id="assistant-close" class="assistant-head-btn" aria-label="Close assistant">×</button>
                 </div>
             </div>
@@ -7273,14 +7273,6 @@ body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip
 body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-label,
 body.dark-mode #dashboard-section.enterprise-saas .command-center-card .kpi-chip .kpi-value {
     color: #ffffff !important;
-}
-
-/* Final light-mode lock: category section background */
-body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section),
-body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .content-header,
-body:not(.dark-mode) .content-section[id$="-section"]:not(#dashboard-section) .errors-container {
-    background: #e8e9ed !important;
-    background-color: #e8e9ed !important;
 }
 </style>
     <style id="final-header-logo-lock">

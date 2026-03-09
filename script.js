@@ -1804,13 +1804,16 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
         const toggle = document.getElementById('assistant-toggle');
         const win = document.getElementById('assistant-window');
         const closeBtn = document.getElementById('assistant-close');
+        const clearBtn = document.getElementById('assistant-clear');
         const minimizeBtn = document.getElementById('assistant-minimize');
         const settingsBtn = document.getElementById('assistant-settings');
         const sendBtn = document.getElementById('assistant-send');
         const input = document.getElementById('assistant-input');
         const messages = document.getElementById('assistant-messages');
+        const subtitleEl = win ? win.querySelector('.assistant-subtitle') : null;
         if (!win || !sendBtn || !input || !messages) return;
         let assistantCardSeq = 0;
+        const subtitleBaseText = subtitleEl ? safeText(subtitleEl) || 'PostgreSQL help' : 'PostgreSQL help';
 
         const stopWords = new Set([
             'the', 'a', 'an', 'is', 'are', 'to', 'for', 'in', 'on', 'of', 'and', 'or', 'with', 'how',
@@ -1834,6 +1837,17 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
 
         function safeText(el) {
             return (el && el.textContent ? el.textContent : '').replace(/\s+/g, ' ').trim();
+        }
+
+        function setAssistantStatus(statusText) {
+            if (!subtitleEl) return;
+            subtitleEl.textContent = statusText ? `${subtitleBaseText} · ${statusText}` : subtitleBaseText;
+        }
+
+        function updateComposerState() {
+            const hasText = !!(input.value || '').trim();
+            sendBtn.disabled = !hasText;
+            sendBtn.setAttribute('aria-disabled', hasText ? 'false' : 'true');
         }
 
         function isDetailedQuery(text) {
@@ -1997,16 +2011,92 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
         function addOptions(options) {
             const row = document.createElement('div');
             row.className = 'assistant-options';
-            options.forEach((label) => {
+            options.forEach((option) => {
+                const label = typeof option === 'string' ? option : option.label;
+                if (!label) return;
                 const btn = document.createElement('button');
                 btn.textContent = label;
                 btn.addEventListener('click', () => {
-                    handleQuestion(label);
+                    if (typeof option === 'object' && typeof option.action === 'function') {
+                        option.action();
+                        return;
+                    }
+                    if (typeof option === 'object' && option.prompt) {
+                        handleQuestion(option.prompt, { echoUser: false });
+                        return;
+                    }
+                    handleQuestion(label, { echoUser: false });
                 });
                 row.appendChild(btn);
             });
             messages.appendChild(row);
             messages.scrollTop = messages.scrollHeight;
+        }
+
+        function getStarterOptions() {
+            return [
+                {
+                    label: 'Connection triage',
+                    prompt: 'Give me a step-by-step checklist to diagnose PostgreSQL connection failures.'
+                },
+                {
+                    label: 'Slow query fix',
+                    prompt: 'How do I diagnose and fix a slow PostgreSQL query in this project?'
+                },
+                {
+                    label: 'Lock/deadlock help',
+                    prompt: 'Show me how to investigate PostgreSQL locks and deadlocks quickly.'
+                },
+                {
+                    label: 'Find by error code',
+                    prompt: 'I have a PostgreSQL error code and want the exact matching issue card.'
+                }
+            ];
+        }
+
+        function getFollowUpOptions(query, response) {
+            const q = normalize(query);
+            const actions = [];
+            if (response && response.sectionId) {
+                actions.push({
+                    label: 'Open section',
+                    action: () => {
+                        if (navigateToMatch(response)) {
+                            addMessage('assistant', 'Opened the section.');
+                        } else {
+                            addMessage('assistant', 'I could not open a matching section from the sidebar.');
+                        }
+                    }
+                });
+            }
+            if (q.includes('connection') || q.includes('auth') || q.includes('login')) {
+                actions.push({
+                    label: 'Auth failures',
+                    prompt: 'List common authentication and pg_hba.conf failure patterns and how to verify each.'
+                });
+            } else if (q.includes('performance') || q.includes('slow') || q.includes('query')) {
+                actions.push({
+                    label: 'SQL checklist',
+                    prompt: 'Give me a practical SQL performance checklist with exact checks I should run first.'
+                });
+            } else if (q.includes('lock') || q.includes('deadlock')) {
+                actions.push({
+                    label: 'Unblock now',
+                    prompt: 'What is the fastest safe sequence to identify blocker PID and unblock transactions?'
+                });
+            } else {
+                actions.push(
+                    {
+                        label: 'Top connection issues',
+                        prompt: 'Show the most important connection and auth issues in this project.'
+                    },
+                    {
+                        label: 'Top query issues',
+                        prompt: 'Show the most important query/indexing issues in this project.'
+                    }
+                );
+            }
+            return actions.slice(0, 2);
         }
 
         function buildFallbackAnswer(question) {
@@ -2110,27 +2200,35 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
             };
         }
 
-        function handleQuestion(raw) {
+        function clearConversation() {
+            messages.innerHTML = '';
+            seedAssistantIntro();
+            input.focus();
+            setAssistantStatus('');
+        }
+
+        function handleQuestion(raw, options) {
             const query = (raw || '').trim();
             if (!query) return;
-            addMessage('user', query);
+            if (normalize(query) === '/clear') {
+                clearConversation();
+                return;
+            }
+            if (!options || options.echoUser !== false) {
+                addMessage('user', query);
+            }
+            setAssistantStatus('Searching');
             const response = buildAnswer(query);
+            setAssistantStatus('');
             if (!response) return;
             addMessage('assistant', response.text);
 
-            if (response.sectionId) {
-                const row = document.createElement('div');
-                row.className = 'assistant-options';
-                const openBtn = document.createElement('button');
-                openBtn.textContent = 'Open Section';
-                openBtn.addEventListener('click', () => {
-                    if (navigateToMatch(response)) {
-                        addMessage('assistant', 'Opened the section.');
-                    }
-                });
-                row.appendChild(openBtn);
-                messages.appendChild(row);
-                messages.scrollTop = messages.scrollHeight;
+            const shouldAutoOpen = /\b(open|go to|take me|show)\b/i.test(query);
+            if (response.sectionId && shouldAutoOpen && navigateToMatch(response)) {
+                addMessage('assistant', 'Opened the section.');
+            } else {
+                const followUps = getFollowUpOptions(query, response);
+                if (followUps.length) addOptions(followUps);
             }
         }
 
@@ -2138,9 +2236,9 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
             if (!messages.children.length) {
                 addMessage(
                     'assistant',
-                    "Hello! 👋 I'm your PostgreSQL assistant."
+                    "Ask by symptom, error code, or goal. I will find the closest project issue and next action."
                 );
-                addOptions(['Connection Issues', 'Query Problems', 'Performance Issues']);
+                addOptions(getStarterOptions());
             }
         }
 
@@ -2151,6 +2249,7 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
                 win.classList.remove('hidden');
                 toggle.style.display = 'none';
                 seedAssistantIntro();
+                input.focus();
             });
         }
 
@@ -2174,18 +2273,41 @@ body.dark-mode #dashboard-section.enterprise-saas .timeline-card::before {
             });
         }
 
+        if (clearBtn) {
+            clearBtn.addEventListener('click', clearConversation);
+        }
+
         sendBtn.addEventListener('click', () => {
             handleQuestion(input.value);
             input.value = '';
+            updateComposerState();
             input.focus();
         });
 
+        input.addEventListener('input', updateComposerState);
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 handleQuestion(input.value);
                 input.value = '';
+                updateComposerState();
             }
         });
+
+        document.addEventListener('keydown', (e) => {
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            const typingInField = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
+            if (e.key === '/' && !typingInField && !win.classList.contains('hidden')) {
+                e.preventDefault();
+                input.focus();
+            }
+            if (e.key === 'Escape' && !win.classList.contains('hidden')) {
+                win.classList.add('hidden');
+                if (toggle) toggle.style.display = 'flex';
+            }
+        });
+
+        input.placeholder = 'Ask by error/code/symptom (e.g., 53300, deadlock, slow query)';
+        updateComposerState();
     }
 
     initAssistant();
